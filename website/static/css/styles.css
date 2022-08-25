@@ -1,0 +1,175 @@
+:root {
+    --white: #FFFFFF;
+    --orange: #52ab98;
+    --black: #2b6777;
+    --grey: #F2F2F2;
+    --orange-low: #c8d8e4;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.orange {
+    background-color: var(--orange) !important;
+    color: var(--white) !important;
+}
+
+.black {
+    background-color: var(--black) !important;
+    color: var(--white) !important;
+}
+
+body {
+    background-color: var(--white);
+    /* background-image: url("https://www.transparenttextures.com/patterns/concrete-wall.png"); */
+}
+
+.black-text {
+    color: var(--black) !important;
+}
+
+.white-text {
+    color: var(--white) !important;
+}
+
+.orange-text {
+    color: var(--orange) !important;
+}
+
+.logo-container {
+    padding: 8%;
+}
+
+.tabs {
+    background-color: var(--white);
+}
+
+.tabs .tab a {
+    color: var(--black);
+    /*Custom Text Color*/
+  }
+  
+  .tabs .tab a:hover {
+    color:var(--black) !important;
+    /*Custom Color On Hover*/
+  }
+
+.tabs .tab a:focus.active {
+    color: var(--black) !important;
+    /*Custom Text Color While Active*/
+    background-color: var(--orange-low);
+    /*Custom Background Color While Active*/
+  }
+
+.tabs .indicator {
+    background-color:var(--orange);
+}
+
+.sidenav {
+    background-color: var(--white);
+}
+
+#sidenav-bg {
+    width: 100%;
+}
+
+.brand-logo {
+    width: 100%;
+    transform: scale(1.8);
+}
+
+#logo {
+    width: 100px;
+    margin-top: 10px;
+}
+
+.footer-container {
+    margin: 5%;
+    width: 80%;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    width: 90%;
+    margin-bottom: 5.5em;
+}
+
+.divider {
+    margin: 1vh 0 !important;
+}
+
+.logout-button {
+    width: 100% !important;
+}
+
+.content-container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.card {
+    border-radius: 1%;
+    margin: 1em;
+    padding: 0.5em 2em;
+}
+
+.card-title {
+    margin: 1em 0;
+    font-weight: bold !important;
+}
+
+.input-field {
+    background-color: var(--white) !important;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.input-field label {
+    color: var(--black);
+}
+
+.input-field input:focus+label, .input-field textarea:focus+label {
+    color: var(--orange) !important;
+}
+
+.input-field input:focus, .input-field textarea:focus {
+    border-bottom: 1px solid var(--orange) !important;
+    box-shadow: 0 1px 0 0 var(--orange) !important;
+}
+
+.input-field .prefix.active {
+    color: var(--orange);
+}
+
+.btn {
+    margin-left: 2% !important;
+}
+
+.filter-btn {
+    margin-left: 2% !important;
+    border-radius: 15%;
+}
+
+.buttons {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    padding: 0.5em;
+    max-width: fit-content;
+    margin-right: 1em;
+}
+
+.waves-effect.waves-orange .waves-ripple {
+    background-color: var(--orange-low);
+}
+
+[type="checkbox"]:checked + span:not(.lever):before {
+    border-right: 2px solid var(--orange);
+    border-bottom: 2px solid var(--orange);
+}
+
+.modal-content, .modal-footer { 
+    background-color: var(--white) !important;
+}

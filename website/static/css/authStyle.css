@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+body {
+    margin: 0px;
+    height: 100%;
+    background-color: #F2F2F2;
+    background-image: url("https://www.transparenttextures.com/patterns/concrete-wall.png");
+}
+
+.container {
+    background-color: #F2F2F2;
+    border-radius: 3%;
+    padding: 5%;
+    max-width: 30%;
+    height: fit-content;
+    margin: 20vh auto 0 auto;
+    box-shadow: 0px 0px 43px 17px #5C636E50;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    padding: 2%;
+}
+
+input {
+    background-color: #F2F2F2;
+    padding: 2%;
+    margin: 1%;
+    border: 1px solid #5C636E;
+    border-radius: 4px;
+}
+
+#btn {
+    margin: 5% auto;
+    padding: 2%;
+    width: 30%;
+    background-color: #F96D00;
+    border: none;
+    border-radius: 5px;
+}
+
+#btn:hover {
+    background-color: #5C636E;
+    color: #F2F2F2;
+    transition: 0.5s ease-in-out;
+}
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.form-control i {
+    position: absolute;
+    top: 65px;
+    right: 15px;
+    visibility: hidden;
+}
+
+.form-control.success input {
+    border: 1px solid #2ECC71;
+}
+
+.form-control.err input {
+    border: 1px solid #E74C3C;
+}
+
+.form-control.success i.fa-check-circle {
+    color: #2ECC71;
+    visibility: visible;
+}
+
+.form-control.err i.fa-exclamation-circle {
+    color: #E74C3C;
+    visibility: visible;
+}
+
+.error {
+    margin: 1%;
+    visibility: hidden;
+}
+
+.form-control.err .error {
+    visibility: visible;
+    color: #E74C3C;
+}
