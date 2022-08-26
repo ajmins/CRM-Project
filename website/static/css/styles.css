@@ -24,7 +24,10 @@ body {
     background-color: var(--white);
     /* background-image: url("https://www.transparenttextures.com/patterns/concrete-wall.png"); */
 }
-
+/*top container*/
+.section {
+    padding-top: 4rem;
+}
 .black-text {
     color: var(--black) !important;
 }
@@ -172,4 +175,25 @@ body {
 
 .modal-content, .modal-footer { 
     background-color: var(--white) !important;
+}
+
+/*footer*/
+.page-footer {
+    color: black !important;
+    background-color: transparent !important;
+    margin-bottom: 300px !important;
+
+}
+.flex-wrapper {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .page-footer .footer-copyright {
+    color: rgba(110, 110, 110, 0.8) !important;
+    background-color: transparent !important;
+}
+.align-footer{
+    padding-left: 1em;
 }
