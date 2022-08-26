@@ -6,7 +6,7 @@
         <div class="input-field">
             <i class="material-icons prefix black-text">search</i>
             <input id="icon_prefix" type="text" class="validate">
-            <label for="icon_prefix">Search Category</label>
+            <label for="icon_prefix">Search Course</label>
         </div>
     </div>
 
@@ -34,7 +34,7 @@
                         <i class="material-icons right">send</i>
                     </button>
                 </div>
-            </form> 
+            </form>
         </div>
     </div>
 
@@ -70,33 +70,33 @@
         </div>
     </div>
 </div>
-
-<div class="card">
-    <div class="row right">
-        <a href="#modal3" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal3').modal('open');">Edit
-            <i class="material-icons right">edit</i>
-        </a>
-        <div id="modal3" class="modal">
-            <div class="modal-content">
-                <h1>Hi</h1>
+<!--card-->
+{% for category in categories %}
+    <div class="card">
+        <div class="row right">
+            <a href="#modal3" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal3').modal('open');">Edit
+                <i class="material-icons right">edit</i>
+            </a>
+            <div id="modal3" class="modal">
+                <div class="modal-content">
+                    <h1>Hi</h1>
+                </div>
+            </div>
+            <a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Delete
+                <i class="material-icons right">delete</i>
+            </a>
+            <div id="modal4" class="modal">
+                <div class="modal-content">
+                    <h1>Hi</h1>
+                </div>
             </div>
         </div>
-        <a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Delete
-            <i class="material-icons right">delete</i>
-        </a>
-        <div id="modal4" class="modal">
-            <div class="modal-content">
-                <h1>Hi</h1>
-            </div>
-        </div>
+        <h1 class="card-title">
+            {{ category.categoryName }}
+        </h1>
+        <p>
+            {{ category.categoryComments }}
+        </p>
     </div>
-    <h1 class="card-title">
-        Card Title
-    </h1>
-    <p>
-        I am a very simple card. I am good at containing small bits of
-        information. I am convenient because I require little markup to
-        use effectively.
-    </p>
-</div>
+{% endfor %}
 {% endblock %}
