@@ -10,3 +10,7 @@ def batches():
 @views.route('/categories')
 def categories():
     return render_template('categories.html')
+ 
+@views.route('/qualification')
+def qualifications():
+    return render_template('qualification.html')
