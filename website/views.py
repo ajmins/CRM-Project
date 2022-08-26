@@ -5,3 +5,7 @@ views = Blueprint('views', __name__)
 @views.route('/batches')
 def batches():
     return render_template('batches.html')
+
+@views.route('/categories')
+def categories():
+    return render_template('categories.html')
