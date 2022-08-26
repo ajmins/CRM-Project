@@ -1,12 +1,12 @@
 {% extends "base.html" %} 
-{% block title %}Categories{% endblock %} 
+{% block title %}Qualification{% endblock %} 
 {% block content %}
 <div class="buttons">
     <div class="search-bar">
         <div class="input-field">
             <i class="material-icons prefix black-text">search</i>
             <input id="icon_prefix" type="text" class="validate">
-            <label for="icon_prefix">Search Category</label>
+            <label for="icon_prefix">Search qualification</label>
         </div>
     </div>
 
@@ -15,7 +15,7 @@
     </button>
 
     <a href="#modal2" class="btn waves-effect waves-light orange modal-trigger"
-        onclick="$('#modal2').modal('open');">Add category
+        onclick="$('#modal2').modal('open');">Add qualification
         <i class="material-icons right">add</i>
     </a>
 
@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <textarea id="description" class="materialize-textarea"></textarea>
-                        <label for="description">Enter the category name</label>
+                        <label for="description">Enter the qualification name</label>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -34,7 +34,7 @@
                         <i class="material-icons right">send</i>
                     </button>
                 </div>
-            </form> 
+            </form>
         </div>
     </div>
 
@@ -47,19 +47,19 @@
                 <p>
                     <label>
                         <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Filter 1</span>
+                        <span>Category 1</span>
                     </label>
                 </p>
                 <p>
                     <label>
                         <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Filter 2</span>
+                        <span>Category 2</span>
                     </label>
                 </p>
                 <p>
                     <label>
                         <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Filter 3</span>
+                        <span>Category 3</span>
                     </label>
                 </p>
             </form>
@@ -78,7 +78,7 @@
         </a>
         <div id="modal3" class="modal">
             <div class="modal-content">
-                <h1>Hi</h1>
+                <h1>Hi</h1> 
             </div>
         </div>
         <a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Delete

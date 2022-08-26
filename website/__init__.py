@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 
-db = SQLAlchemy()
+db = SQLAlchemy() 
 DB_NAME = "database.db"
 basedir = path.abspath(path.dirname(__file__))
 
