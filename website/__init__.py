@@ -9,9 +9,10 @@ basedir = path.abspath(path.dirname(__file__))
 def create_app():
     app = Flask(__name__)
     # encrypts the cookie data
-    app.config['SECRET_KEY'] = 'qwerty'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mssql+pyodbc://sa:123@192.168.5.152:1891/chummaveruthe?driver=SQL+Server+Native+Client+11.0'
+    print("server connected!")
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{path.join(basedir, DB_NAME)}"
+    app.config['SECRET_KEY'] = "123"
     db.init_app(app)
 
     from .views import views
