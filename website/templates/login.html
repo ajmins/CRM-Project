@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="../../css/materialize.css" media="screen,projection" />
+    <link rel="stylesheet" href="../../css/styles.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+    <div class="flex-wrapper">
+    <section class="container section" id="userAuth">
+        <div class="row">
+            <div class="col s12 l6">
+                <div class="logo-container">
+                    <img src="../../../images/logo-dark.png" alt="">
+                </div>
+                <p>With more lessons, you can begin, improve, or strengthen your skills.</p>
+            </div>
+            <div class="col s12 l6 offest-l2">
+                <ul class="tabs">
+                    <li class="tab col s6">
+                        <a href="#register" class="black-text">Register</a>
+                    </li>
+                    <li class="tab col s6">
+                        <a href="#login" class="black-text">Login</a>
+                    </li>
+                </ul>
+                <div class="col s12" id="register">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">person_outline</i>
+                                <input id="first_name" type="text" class="validate">
+                                <label for="first_name">First Name</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="last_name" type="text" class="validate">
+                                <label for="last_name">Last Name</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">person</i>
+                                <input id="email" type="email" class="validate">
+                                <label for="email">Email</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">fingerprint</i>
+                                <input id="password" type="password" class="validate">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                        <a class="waves-effect waves-light btn orange" href="adminDashboard.html"><i
+                                class="material-icons left">send</i>Submit</a>
+                    </form>
+                </div>
+                <div class="col s12" id="login">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">person</i>
+                                <input id="email" type="email" class="validate">
+                                <label for="email">Email</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">fingerprint</i>
+                                <input id="password" type="password" class="validate">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                        <a href="#" class="orange-text">Forgot Password?</a><br><br><br>
+                        <a class="waves-effect waves-light btn orange" href="adminDashboard.html"><i
+                                class="material-icons left">send</i>Submit</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section> 
+    <!--footer-->
+    <footer class="page-footer">
+    <div class="footer-copyright">
+        <div class="right-align container align-footer">
+            ©2022 All Rights Reserved, <span style="color:#52ab98">InApp Academy</span>. Privacy & Terms
+
+        </div>
+      </div>
+    </footer>
+</div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../js/materialize.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.tabs').tabs();
+        })
+    </script>
+</body>
+
+</html>
