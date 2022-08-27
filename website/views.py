@@ -5,11 +5,11 @@ views = Blueprint('views', __name__)
 
 @views.route('/batches', methods=['GET'])
 def batches():
-    return render_template('batches.html')
+    return render_template('batches.html', categories= Category.query.all())
 
 @views.route('/categories')
 def categories():
-    return render_template('categories.html')
+    return render_template('categories.html', categories= Category.query.all())
  
 @views.route('/qualification')
 def qualifications():
