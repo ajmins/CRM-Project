@@ -40,8 +40,8 @@ class Batches(db.Model):
     batchCourseId = db.Column(db.String(80), db.ForeignKey('courses.courseId'), nullable=False) #foreign key
     batchStatus = db.Column(db.Boolean, default=True)
     batchStrength = db.Column(db.Integer)
-    batchStartDate = db.Column(db.DateTime, nullable=False)
-    batchEndDate = db.Column(db.DateTime, nullable=False)
+    batchStartDate = db.Column(db.Date, nullable=False)
+    batchEndDate = db.Column(db.Date, nullable=False)
 
     enrollments = db.relationship('CourseEnrollment')
     users = db.relationship('UserBatch')
@@ -52,7 +52,7 @@ class Batches(db.Model):
     #     self.batchStartDate = batchStartDate
     #     self.batchEndDate = batchEndDate
     #     self.batchStatus = batchStatus
-     #   self.batchStrength = batchStrength
+    #     self.batchStrength = batchStrength
 
 class Enquiries(db.Model):
     enquiryId = db.Column(db.Integer, primary_key=True) #primary key
