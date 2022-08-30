@@ -3,11 +3,23 @@
     --orange: #52ab98;
     --black: #2b6777;
     --grey: #F2F2F2;
+    --green: #2ECC71;
+    --red: #E74C3C;
     --orange-low: #c8d8e4;
+    --green-low: #2ECC7180;
+    --red-low: #E74C3C80;
 }
 
 * {
     box-sizing: border-box;
+}
+
+.grey {
+    background-color: var(--grey) !important;
+}
+
+.white {
+    background-color: var(--white) !important;
 }
 
 .orange {
@@ -25,6 +37,10 @@ body {
     /* background-image: url("https://www.transparenttextures.com/patterns/concrete-wall.png"); */
 }
 /*top container*/
+.nav-wrapper {
+    box-shadow: none !important;
+}
+
 .section {
     padding-top: 4rem;
 }
@@ -38,6 +54,14 @@ body {
 
 .orange-text {
     color: var(--orange) !important;
+}
+
+.green-text {
+    color: var(--green) !important;
+}
+
+.red-text {
+    color: var(--red) !important;
 }
 
 .logo-container {
@@ -119,14 +143,26 @@ body {
 }
 
 .card-title {
-    margin: 1em 0;
+    margin: 1em 0 0 0;
     font-weight: bold !important;
+}
+
+.card-subtitle {
+    color: grey;
+    font-weight: bold;
+}
+
+.result-count {
+    color: grey;
+    font-weight: bold;
+    margin: 0.5em;
 }
 
 .input-field {
     background-color: var(--white) !important;
     padding-left: 5%;
     padding-right: 5%;
+    margin: 2em auto !important;
 }
 
 .input-field label {
@@ -155,6 +191,12 @@ body {
     border-radius: 15%;
 }
 
+.back {
+    max-width: fit-content;
+    float: left;
+    margin: 1em;
+}
+
 .buttons {
     margin-left: auto;
     display: flex;
@@ -164,8 +206,20 @@ body {
     margin-right: 1em;
 }
 
+.calendar-btn {
+    margin-left: 0.5em;
+}
+
 .waves-effect.waves-orange .waves-ripple {
     background-color: var(--orange-low);
+}
+
+.waves-effect.waves-green .waves-ripple {
+    background-color: var(--green-low);
+}
+
+.waves-effect.waves-red .waves-ripple {
+    background-color: var(--red-low);
 }
 
 [type="checkbox"]:checked + span:not(.lever):before {
@@ -173,8 +227,19 @@ body {
     border-bottom: 2px solid var(--orange);
 }
 
+#modal6 {
+    width: 60%;
+    height: 60%;
+    background-color: var(--white);
+}
+
 .modal-content, .modal-footer { 
     background-color: var(--white) !important;
+}
+
+.switch {
+    margin-left: 25% !important;
+    width: fit-content;
 }
 
 /*footer*/
@@ -197,3 +262,4 @@ body {
 .align-footer{
     padding-left: 1em;
 }
+
