@@ -58,5 +58,40 @@ def editCategory(categoryId):
 #qualification code
 @views.route('/qualification')
 def qualifications():
+    if request.method == 'POST':
+        qualificationId = qualificationId
+        qualificationName = request.form.get('qualificationName')
+        qualificationStatus = bool(request.form.get('qualificationStatus'))
+        print(qualificationId, qualificationName, qualificationStatus)
+        new_qualification = Qualifications(qualificationId=qualificationId, qualificationName=qualificationName, qualificationStatus=qualificationStatus)
+        db.session.add(new_qualification)
+        db.session.commit()
     qualifications=Qualifications.query.all()
-    return render_template('qualification.html',qualifications=qualifications)
+    return render_template('qualification.html',qualifications=qualifications[::-1], listAll=True)
+
+@views.route('/qualification/<qualificationId>', methods=['DELETE'])
+def deleteQualification(qualificationId):
+    qual = Qualifications.query.get(qualificationId)
+    if qual:
+        db.session.delete(qual)
+        db.session.commit()
+    return jsonify({})
+
+@views.route('/qualification/<searchBy>/<searchConstraint>')
+def searchQualification(searchBy, searchConstraint):
+    if searchBy == 'id':
+        qual = Qualifications.query.filter(Qualifications.qualificationId.like("%"+searchConstraint+"%")).all()
+    elif searchBy == 'name':
+        qual = Qualifications.query.filter(Qualifications.qualificationName.like("%"+searchConstraint+"%")).all()
+    return render_template('qualification.html', qual=qual, listAll=False)
+
+@views.route('/qualification/<qualificationId>', methods=['PUT','PATCH'])
+def editQualification(qualificationId):
+    qual = Qualifications.query.get_or_404(qualificationId)
+    value = json.loads(request.data)
+    qual.qualificationId=value['qualificationId']
+    qual.qualificationName=value['qualificationName']
+    qual.qualificationStatus=value['qualificationStatus']
+    db.session.add(qual)
+    db.session.commit()
+    return jsonify({})
