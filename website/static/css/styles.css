@@ -123,10 +123,22 @@ body {
     font-weight: bold !important;
 }
 
+.card-subtitle {
+    color: grey;
+    font-weight: bold;
+}
+
+.result-count {
+    color: grey;
+    font-weight: bold;
+    margin: 0.5em;
+}
+
 .input-field {
     background-color: var(--white) !important;
     padding-left: 5%;
     padding-right: 5%;
+    margin: 2em auto !important;
 }
 
 .input-field label {
@@ -155,6 +167,12 @@ body {
     border-radius: 15%;
 }
 
+.back {
+    max-width: fit-content;
+    float: left;
+    margin: 1em;
+}
+
 .buttons {
     margin-left: auto;
     display: flex;
@@ -162,6 +180,10 @@ body {
     padding: 0.5em;
     max-width: fit-content;
     margin-right: 1em;
+}
+
+.calendar-btn {
+    margin-left: 0.5em;
 }
 
 .waves-effect.waves-orange .waves-ripple {
@@ -175,6 +197,11 @@ body {
 
 .modal-content, .modal-footer { 
     background-color: var(--white) !important;
+}
+
+.switch {
+    margin-left: 25% !important;
+    width: fit-content;
 }
 
 /*footer*/
