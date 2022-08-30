@@ -5,10 +5,8 @@ from os import path
 db = SQLAlchemy() 
 #DB_NAME = "database.db"
 DB_NAME = "chummaveruthe"
-# SQL_SERVER_USER_PASS_IP_PORT = 'sa:123@192.168.5.152:1891'
-SQL_SERVER_USER_PASS_IP_PORT = 'LAPTOP-85QRUTE7\SQLEXPRESS'
-
-basedir = path.abspath(path.dirname(__file__))
+SQL_SERVER_USER_PASS_IP_PORT = 'sa:123@192.168.5.74:1891'
+#SQL_SERVER_USER_PASS_IP_PORT = 'LAPTOP-85QRUTE7\SQLEXPRESS'
 
 def create_app():
     app = Flask(__name__)
