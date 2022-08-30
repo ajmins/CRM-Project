@@ -82,7 +82,6 @@ class Courses(db.Model):
     courseRating = db.Column(db.Integer)
     courseStatus = db.Column(db.Boolean, default=True)
 
-
     batches = db.relationship('Batches')
     enquiries = db.relationship('Enquiries')
     enrollments = db.relationship('CourseEnrollment')

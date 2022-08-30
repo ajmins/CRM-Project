@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
+{% block title %}Categories{% endblock %} 
 {% block content %}
 <div class="buttons">
     <div class="search-bar">
@@ -9,7 +10,33 @@
         </div>
     </div>
 
-    <a id="searchBtn" class="btn waves-effect white-text waves-light orange">Search<i class="material-icons white-text right">search</i></a>
+    <button id="searchBtn" class="btn waves-effect waves-light orange">Search
+        <i class="material-icons white-text right">search</i>
+    </button>
+
+    <a href="#modal2" class="btn waves-effect waves-light orange modal-trigger"
+        onclick="$('#modal2').modal('open');">Add category
+        <i class="material-icons right">add</i>
+    </a>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="description" class="materialize-textarea"></textarea>
+                        <label for="description">Enter the category name</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-close btn-flat waves-effect waves-orange" type="submit"
+                        name="action">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <a href="#modal1" class="filter-btn btn-flat modal-trigger btn-medium waves-effect waves-orange"
         onclick="$('#modal1').modal('open');"><i class="material-icons">filter_list</i></a>
@@ -43,6 +70,7 @@
         </div>
     </div>
 </div>
+<!--card-->
 {% for category in categories %}
     <div class="card">
         <div class="row right">
