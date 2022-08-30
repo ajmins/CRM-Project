@@ -43,18 +43,85 @@
         </div>
     </div>
 </div>
-{% for category in categories %}
+{% for course in courses %}
+
+    {% if course.courseStatus == True: %}
     <div class="card">
         <div class="row right">
-            <a href="#modal3" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal3').modal('open');">Edit
-                <i class="material-icons right">edit</i>
+            <a href="#modal3" class="modal-close btn-flat waves-effect waves-orange " onclick="$('#modal3').modal('open');">Edit
+                <i class="material-icons right ">edit</i>
+            </a>
+            <div id="modal3" class="modal">
+                <div class="modal-content row">
+                    <form enctype="multipart/form-data" method="post">
+                        <div class="input-field">
+                            <input id="courseName" type="text" class="validate" value="{{ course.courseName }}">
+                            <label for="courseName">Course Name</label>
+                        </div>
+                        <div class="input-field">
+                            <input disabled id="courseCode" type="text" class="validate" value="{{ course.courseId }}">
+                            <label for="courseCode">Course Code</label>
+                        </div>
+                        <div class="input-field">
+                            <input id="courseDescription" type="text" class="validate" value="{{ course.courseDescription }}">
+                            <label for="courseDescription">Course Description</label>
+                        </div>
+                        <div class="input-field">
+                            <input id="courseDuration" type="text" class="validate" value="{{ course.courseDuration }} months">
+                            <label for="courseDuration">Course Duration</label>
+                        </div>
+                        <div class="input-field">
+                            <input id="courseFee" type="text" class="validate" value="{{ course.courseInstructorID }}">
+                            <label for="courseFee">Course Instructor ID</label>
+                        </div>
+                        <div class="input-field">
+                            <div class="switch">
+                                <label>
+                                  Disable Course
+                                  <input type="checkbox">
+                                  <span class="lever" onclick="{course.courseStatus = True}"></span>
+                                    Enable Course
+                                </label>
+                              </div>
+                        </div>
+                        <div class="input-field">
+                            <input id="courseSyllabus" type="file" class="validate" value="">
+                            <label for="courseSyllabus">Course Syllabus</label>
+                        </div>
+                        <div class="input-field">
+                            <input type="submit" class="btn waves-effect waves-light orange" value="Save">
+                        </div>
+                   </form>
+                </div>
+            </div>
+            <a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Disable
+                <i class="material-icons right">delete</i>
+            </a>
+            <div id="modal4" class="modal">
+                <div class="modal-content">
+                    content to edit
+                </div>
+            </div>
+        </div>
+        <h1 class="card-title">
+            {{ course.courseName }}
+        </h1>
+        <p>
+            {{ course.courseDescription }}
+        </p>
+    </div>
+    {% else %}
+    <div class="card">
+        <div class="row right">
+            <a href="#modal3" class="modal-close btn-flat waves-effect waves-orange disabled" onclick="$('#modal3').modal('open');">Edit
+                <i class="material-icons right disabled">edit</i>
             </a>
             <div id="modal3" class="modal">
                 <div class="modal-content">
                     <h1>Hi</h1>
                 </div>
             </div>
-            <a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Delete
+            <a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Enable
                 <i class="material-icons right">delete</i>
             </a>
             <div id="modal4" class="modal">
@@ -64,11 +131,13 @@
             </div>
         </div>
         <h1 class="card-title">
-            {{ category.categoryName }}
+            {{ course.courseName }}
         </h1>
         <p>
-            {{ category.categoryComments }}
+            {{ course.courseDescription }}
         </p>
     </div>
+
+    {% endif %}
 {% endfor %}
 {% endblock %}
