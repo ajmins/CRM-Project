@@ -1,43 +1,46 @@
 {% extends "base.html" %} 
 {% block title %}Categories{% endblock %} 
 {% block content %}
-<div class="buttons">
-    <div class="search-bar">
-        <div class="input-field">
-            <i class="material-icons prefix black-text">search</i>
-            <input id="icon_prefix" type="text" class="validate">
-            <label for="icon_prefix">Search Course</label>
-        </div>
-    </div>
-
-    <button id="searchBtn" class="btn waves-effect waves-light orange">Search
-        <i class="material-icons white-text right">search</i>
+{% if not listAll %}
+<div class="back col s3">
+    <button class="back-btn btn-flat btn-medium waves-effect waves-orange" onClick="categoryBack()">
+        <i class="material-icons">arrow_back</i>
     </button>
+</div>
+{% endif %}
 
-    <a href="#modal2" class="btn waves-effect waves-light orange modal-trigger"
-        onclick="$('#modal2').modal('open');">Add category
-        <i class="material-icons right">add</i>
+<!--search category-->
+<div class="buttons col s9">
+    <a href="#modal1" id="searchBtn" class="btn waves-effect waves-light orange" 
+        onclick="$('#modal1').modal('open');">Search
+        <i class="material-icons white-text ">search</i>
     </a>
 
-    <div id="modal2" class="modal">
+    <div id="modal1" class="modal">
         <div class="modal-content">
-            <form action="" method="post">
-                <div class="row">
-                    <div class="input-field col s12">
-                        <textarea id="description" class="materialize-textarea"></textarea>
-                        <label for="description">Enter the category name</label>
-                    </div>
+            <div class="search-bar row">
+                <div class="input-field col s3">
+                    <select name="searchBy" id="searchBy">
+                        <option value='id' selected>Id</option>
+                        <option value='name'>Name</option>
+                    </select>
+                    <label>Search By</label>
                 </div>
-                <div class="modal-footer">
-                    <button class="modal-close btn-flat waves-effect waves-orange" type="submit"
-                        name="action">Submit
-                        <i class="material-icons right">send</i>
-                    </button>
+                <div class="input-field col s9">
+                    <i class="material-icons prefix black-text">search</i>
+                    <input name="searchConstraint" id="searchConstraint" type="text" class="validate">
+                    <label for="searchConstraint">Search category</label>
                 </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat waves-effect waves-orange" type="submit"
+                    name="action" onCLick="searchCategory()">Search
+                    <i class="material-icons right">search</i>
+                </button>
+            </div>
         </div>
     </div>
-
+<!--
     <a href="#modal1" class="filter-btn btn-flat modal-trigger btn-medium waves-effect waves-orange"
         onclick="$('#modal1').modal('open');"><i class="material-icons">filter_list</i></a>
 
@@ -68,35 +71,126 @@
             <a href="#" class="modal-close waves-effect waves-orange btn-flat">Apply</a>
             <a href="#" class="waves-effect waves-orange btn-flat" onclick="clearFilters()">Clear</a>
         </div>
+    </div>-->
+
+<!--adding category-->
+    {% if listAll %}
+    <a href="#modal2" class="btn waves-effect waves-light orange modal-trigger"
+        onclick="$('#modal2').modal('open');">Add category
+        <i class="material-icons right">add</i>
+    </a>
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <form action="" method="post">
+                <div class="row">
+                    <!---
+                    <div class="input-field col s6">
+                        <textarea name="categoryId" id="categoryId" class="materialize-textarea"></textarea>
+                        <label for="categoryId">Enter the category Id</label>
+                    </div>-->
+                    <div class="input-field col s6">
+                        <textarea name="categoryName" id="categoryName" class="materialize-textarea"></textarea>
+                        <label for="categoryName">Enter the category name</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="categoryStatus" id="categoryStatus">
+                            <option value='1'>ENABLED</option>
+                            <option value=''>DISABLED</option>
+                        </select>
+                        <label>Category Status</label>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea name="categoryComments" id="categoryComments" class="materialize-textarea"></textarea>
+                        <label for="categoryComments">Enter any comment</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-close btn-flat waves-effect waves-orange" type="submit"
+                        name="action">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+    {% endif %}
 </div>
 <!--card-->
 {% for category in categories %}
     <div class="card">
         <div class="row right">
-            <a href="#modal3" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal3').modal('open');">Edit
+            <a href="#{{ category.categoryId }}" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#{{ category.categoryId }}').modal('open');">Edit
                 <i class="material-icons right">edit</i>
             </a>
-            <div id="modal3" class="modal">
+            <div id="{{ category.categoryId }}" class="modal">
                 <div class="modal-content">
-                    <h1>Hi</h1>
+                    <form action="">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <textarea name="categoryId" id="editCategoryId{{ category.categoryId }}" class="materialize-textarea" placeholder="{{ category.categoryId }}" disabled></textarea>
+                                <label for="categoryId">Category Id</label>
+                            </div>
+                        
+                            <div class="input-field col s6">
+                                <textarea name="categoryName" id="editCategoryName{{ category.categoryId }}" class="materialize-textarea" placeholder="{{ category.categoryName }}" disabled></textarea>
+                                <label for="categoryName">Category name</label>
+                            </div>
+                        </div>
+                        <div class="input-field col s6">
+                            <select name="editCategoryStatus" id="editCategoryStatus{{ category.categoryId }}" disabled>
+                                {% if category.categoryStatus %}
+                                <option value='1'>ENABLED</option>
+                                {% else %}
+                                <option value=''>DISABLED</option>
+                                {% endif %}
+                            </select>
+                            <label>Category Status</label>
+                        </div>
+                        <div class="row"><!--comments-->
+                            <div class="input-field col s12">
+                                <textarea name="categoryComments" id="editCategoryComments{{ category.categoryId }}" class="materialize-textarea" placeholder="{{ category.categoryComments }}"></textarea>
+                                <label for="categoryComments">Enter a description</label>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button class="modal-close btn-flat waves-effect waves-orange" type="submit"
+                                name="action" onClick="editCategory('{{ category.categoryId }}')">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Delete
+
+            <div class="switch"><!--TO BE MODIFIED-->
+                <label>
+                  <input type="checkbox">
+                  <span class="lever"></span>
+                </label>
+            </div>
+            <!--<a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Delete
                 <i class="material-icons right">delete</i>
             </a>
             <div id="modal4" class="modal">
                 <div class="modal-content">
                     <h1>Hi</h1>
                 </div>
-            </div>
+            </div>-->
         </div>
-        <h1 class="card-title">
-            {{ category.categoryName }}
-        </h1>
+        <div>
+            <h1 class="card-title">
+                {{ category.categoryName }}
+            </h1>
+            <span class="card-subtitle"><em>Category Id: {{ category.categoryId }}</em></span>
+        </div>
         <p>
             {{ category.categoryComments }}
         </p>
     </div>
 {% endfor %}
 {% endblock %}
+
