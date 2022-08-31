@@ -81,16 +81,12 @@ function searchQualification(){
 
 //editing Qualification -- doubt
 function editQualification(qualificationId){
-    comments = document.getElementById('editCategoryComments' + qualificationId).value
-    if(comments == 0){
-        comments = document.getElementById('editCategoryComments' + qualificationId).placeholder
-    }
     fetch('/qualification/' + qualificationId, {
         method: 'PUT',
         body: JSON.stringify({
             qualificationId: qualificationId,
-            qualificationName: document.getElementById('editCategoryName' + qualificationId).placeholder,
-            qualificationStatus: Boolean(document.getElementById('editCategoryStatus' + qualificationId).value),
+            qualificationName: document.getElementById('editQualificationName' + qualificationId).placeholder,
+            qualificationStatus: document.getElementById('editQualificationStatus' + qualificationId).value,
         })
     })
     .then(() => window.location.href="/qualification");

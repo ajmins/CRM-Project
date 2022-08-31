@@ -83,11 +83,15 @@
         <div class="modal-content">
             <form action="" method="post">
                 <div class="row">
+                    <!---
                     <div class="input-field col s6">
                         <textarea name="categoryId" id="categoryId" class="materialize-textarea"></textarea>
                         <label for="categoryId">Enter the category Id</label>
+                    </div>-->
+                    <div class="input-field col s6">
+                        <textarea name="categoryName" id="categoryName" class="materialize-textarea"></textarea>
+                        <label for="categoryName">Enter the category name</label>
                     </div>
-                
                     <div class="input-field col s6">
                         <select name="categoryStatus" id="categoryStatus">
                             <option value='1'>ENABLED</option>
@@ -96,12 +100,7 @@
                         <label>Category Status</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <textarea name="categoryName" id="categoryName" class="materialize-textarea"></textarea>
-                        <label for="categoryName">Enter the category name</label>
-                    </div>
-                </div>
+                
                 <div class="row">
                     <div class="input-field col s12">
                         <textarea name="categoryComments" id="categoryComments" class="materialize-textarea"></textarea>
@@ -172,7 +171,7 @@
                   <input type="checkbox">
                   <span class="lever"></span>
                 </label>
-              </div>
+            </div>
             <!--<a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Delete
                 <i class="material-icons right">delete</i>
             </a>
@@ -194,3 +193,4 @@
     </div>
 {% endfor %}
 {% endblock %}
+

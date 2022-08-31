@@ -56,14 +56,14 @@ def editCategory(categoryId):
     return jsonify({})
 
 #qualification code
-@views.route('/qualification')
+@views.route('/qualification', methods=['GET', 'POST'])
 def qualifications():
     if request.method == 'POST':
-        qualificationId = qualificationId
+        # qualificationId = qualificationId
         qualificationName = request.form.get('qualificationName')
         qualificationStatus = bool(request.form.get('qualificationStatus'))
-        print(qualificationId, qualificationName, qualificationStatus)
-        new_qualification = Qualifications(qualificationId=qualificationId, qualificationName=qualificationName, qualificationStatus=qualificationStatus)
+        print( qualificationName, qualificationStatus)
+        new_qualification = Qualifications(qualificationName=qualificationName, qualificationStatus=qualificationStatus)
         db.session.add(new_qualification)
         db.session.commit()
     qualifications=Qualifications.query.all()
@@ -80,18 +80,19 @@ def deleteQualification(qualificationId):
 @views.route('/qualification/<searchBy>/<searchConstraint>')
 def searchQualification(searchBy, searchConstraint):
     if searchBy == 'id':
-        qual = Qualifications.query.filter(Qualifications.qualificationId.like("%"+searchConstraint+"%")).all()
+        qualifications = Qualifications.query.filter(Qualifications.qualificationId.like("%"+searchConstraint+"%")).all()
     elif searchBy == 'name':
-        qual = Qualifications.query.filter(Qualifications.qualificationName.like("%"+searchConstraint+"%")).all()
-    return render_template('qualification.html', qual=qual, listAll=False)
+        qualifications = Qualifications.query.filter(Qualifications.qualificationName.like("%"+searchConstraint+"%")).all()
+    return render_template('qualification.html', qualifications=qualifications, listAll=False)
 
 @views.route('/qualification/<qualificationId>', methods=['PUT','PATCH'])
 def editQualification(qualificationId):
     qual = Qualifications.query.get_or_404(qualificationId)
     value = json.loads(request.data)
-    qual.qualificationId=value['qualificationId']
     qual.qualificationName=value['qualificationName']
-    qual.qualificationStatus=value['qualificationStatus']
+    qual.qualificationStatus=bool(value['qualificationStatus'])
     db.session.add(qual)
+    print(value)
     db.session.commit()
+    print(value)
     return jsonify({})

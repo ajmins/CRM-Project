@@ -34,14 +34,14 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-close btn-flat waves-effect waves-orange" type="submit"
-                    name="action" onCLick="searchCategory()">Search
+                    name="action" onCLick="searchQualification()">Search
                     <i class="material-icons right">search</i>
                 </button>
             </div>
         </div>
     </div>
 
-<!--adding category-->
+<!--adding qualification-->
     {% if listAll %}
     <a href="#modal2" class="btn waves-effect waves-light orange modal-trigger"
         onclick="$('#modal2').modal('open');">Add qualification
@@ -51,31 +51,30 @@
         <div class="modal-content">
             <form action="" method="post">
                 <div class="row">
+                    <!--
                     <div class="input-field col s6">
                         <textarea name="categoryId" id="categoryId" class="materialize-textarea"></textarea>
                         <label for="categoryId">Enter the qualification Id</label>
-                    </div>
-                
+                    </div>-->
                     <div class="input-field col s6">
-                        <select name="categoryStatus" id="categoryStatus">
+                        <textarea name="qualificationName" id="qualificationName" class="materialize-textarea"></textarea>
+                        <label for="qualificationName">Enter the qualification</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="qualificationStatus" id="qualificationStatus">
                             <option value='1'>ENABLED</option>
                             <option value=''>DISABLED</option>
                         </select>
                         <label>Qualification Status</label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="input-field col s12">
-                        <textarea name="categoryName" id="categoryName" class="materialize-textarea"></textarea>
-                        <label for="categoryName">Enter the qualification</label>
-                    </div>
-                </div>
+                <!--
                 <div class="row">
                     <div class="input-field col s12">
                         <textarea name="categoryComments" id="categoryComments" class="materialize-textarea"></textarea>
                         <label for="categoryComments">Enter any comment</label>
                     </div>
-                </div>
+                </div>-->
                 <div class="modal-footer">
                     <button class="modal-close btn-flat waves-effect waves-orange" type="submit"
                         name="action">Submit
@@ -142,12 +141,9 @@
                             </div>
                         </div>
                         <div class="input-field col s6">
-                            <select name="editQualificationStatus" id="editQualificationStatus{{ qual.qualificationId }}" disabled>
-                                {% if qual.qualificationStatus %}
+                            <select name="editQualificationStatus" id="editQualificationStatus{{ qual.qualificationId }}">
                                 <option value='1'>ENABLED</option>
-                                {% else %}
                                 <option value=''>DISABLED</option>
-                                {% endif %}
                             </select>
                             <label>Qualification Status</label>
                         </div>
@@ -166,7 +162,7 @@
                   <input type="checkbox">
                   <span class="lever"></span>
                 </label>
-              </div>
+            </div>
             <!--<a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Delete
                 <i class="material-icons right">delete</i>
             </a>
@@ -176,9 +172,12 @@
                 </div>
             </div>-->
         </div>
-        <h1 class="card-title">
-            {{ qual.qualificationName }}
-        </h1>
+        <div>
+            <h1 class="card-title">
+                {{ qual.qualificationName }}
+            </h1>
+            <span class="card-subtitle"><em>Qualification Id: {{ qual.qualificationId }} </em></span>
+        </div>
         <p>
             {{ qual.qualificationStatus }}
         </p>
