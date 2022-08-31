@@ -78,6 +78,19 @@ function searchBatch(date){
     .then(() => window.location.href="/batches/" + searchBy + '/' + searchConstraint);
 }
 
+// Back to users
+function userBack(){
+    window.location.href = "/users"
+}
+
+// Search Users
+function searchUser() {
+    searchBy = document.getElementById("searchBy").value;
+    searchConstraint = document.getElementById("searchConstraint").value;
+  
+    fetch("/users/" + searchBy + "/" + searchConstraint, {method: "GET"}).then(() => (window.location.href = "/users/" + searchBy + "/" + searchConstraint));
+  }
+
   // Filter user-role Batch
   function applyRoleFilters() {
     inputs = document.querySelectorAll(".filterCheckbox:checked");
@@ -249,80 +262,80 @@ function qualificationBack(){
 //Chart
 // Building Chart
 function BuildChart(labels, values, chartTitle) {
-var ctx = document.getElementById("myChart").getContext("2d");
-var myChart = new Chart(ctx, {
-    type: "line",
-    data: {
-    labels: labels, // Our labels
-    datasets: [
-        {
-        fill: false,
-        label: chartTitle, // Name the series
-        data: values, // Our values
-        borderColor: [// Add custom color borders
-            "rgba(82, 171, 152, 1)"],
-        borderWidth: 2 // Specify bar border width
-        }
-    ]
-    },
-    options: {
-    responsive: true, // Instruct chart js to respond nicely.
-    maintainAspectRatio: false, // Add to prevent default behavior of full-width/height
-    scales: {
-        xAxes: [
-        {
-            gridLines: {
-            display: false
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+        labels: labels, // Our labels
+        datasets: [
+            {
+            fill: false,
+            label: chartTitle, // Name the series
+            data: values, // Our values
+            borderColor: [// Add custom color borders
+                "rgba(82, 171, 152, 1)"],
+            borderWidth: 2 // Specify bar border width
             }
-        }
-        ],
-        yAxes: [
-        {
-            gridLines: {
-            display: false
-            },
-            ticks: {
-            beginAtZero: true
-            }
-        }
         ]
+        },
+        options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behavior of full-width/height
+        scales: {
+            xAxes: [
+            {
+                gridLines: {
+                display: false
+                }
+            }
+            ],
+            yAxes: [
+            {
+                gridLines: {
+                display: false
+                },
+                ticks: {
+                beginAtZero: true
+                }
+            }
+            ]
+        }
+        }
+    });
+    return myChart;
     }
+    
+    var table = document.getElementById("dataTable");
+    var json = []; // First row needs to be headers
+    var headers = [];
+    for (var i = 0; i < table.rows[0].cells.length; i++) {
+    headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi, "");
     }
-});
-return myChart;
-}
-
-var table = document.getElementById("dataTable");
-var json = []; // First row needs to be headers
-var headers = [];
-for (var i = 0; i < table.rows[0].cells.length; i++) {
-headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi, "");
-}
-
-// Go through cells
-for (var i = 1; i < table.rows.length; i++) {
-var tableRow = table.rows[i];
-var rowData = {};
-for (var j = 0; j < tableRow.cells.length; j++) {
-    rowData[headers[j]] = tableRow.cells[j].innerHTML;
-}
-
-json.push(rowData);
-}
-
-console.log(json);
-
-// Map JSON values back to label array
-var labels = json.map(function (e) {
-return e.date;
-});
-console.log(labels);
-
-// Map JSON values back to values array
-var values = json.map(function (e) {
-return e.logincount;
-});
-console.log(values);
-
-var chart = BuildChart(labels, values, "Login Count of users");
-  
+    
+    // Go through cells
+    for (var i = 1; i < table.rows.length; i++) {
+    var tableRow = table.rows[i];
+    var rowData = {};
+    for (var j = 0; j < tableRow.cells.length; j++) {
+        rowData[headers[j]] = tableRow.cells[j].innerHTML;
+    }
+    
+    json.push(rowData);
+    }
+    
+    console.log(json);
+    
+    // Map JSON values back to label array
+    var labels = json.map(function (e) {
+    return e.date;
+    });
+    console.log(labels);
+    
+    // Map JSON values back to values array
+    var values = json.map(function (e) {
+    return e.logincount;
+    });
+    console.log(values);
+    
+    var chart = BuildChart(labels, values, "Login Count of users");
+      
