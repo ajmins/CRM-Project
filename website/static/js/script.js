@@ -349,78 +349,78 @@ function categoryBack() {
 
 
 // Delete Category
-function deleteCategory(categoryId){
-    fetch('/categories/' + categoryId, {
-        method: 'DELETE'
-    })
-    .then(() => window.location.href="/categories");
-}
+// function deleteCategory(categoryId){
+//     fetch('/categories/' + categoryId, {
+//         method: 'DELETE'
+//     })
+//     .then(() => window.location.href="/categories");
+// }
 
 // Search Category
-function searchCategory(){
-    searchBy = document.getElementById('searchBy').value
-    searchConstraint = document.getElementById('searchConstraint').value
-    fetch('/categories/' + searchBy + '/' + searchConstraint, {
-        method: 'GET'
-    })
-    .then(() => window.location.href="/categories/" + searchBy + '/' + searchConstraint);
-}
+// function searchCategory(){
+//     searchBy = document.getElementById('searchBy').value
+//     searchConstraint = document.getElementById('searchConstraint').value
+//     fetch('/categories/' + searchBy + '/' + searchConstraint, {
+//         method: 'GET'
+//     })
+//     .then(() => window.location.href="/categories/" + searchBy + '/' + searchConstraint);
+// }
 
-//editing category
-function editCategory(categoryId){
-    comments = document.getElementById('editCategoryComments' + categoryId).value
-    if(comments == 0){
-        comments = document.getElementById('editCategoryComments' + categoryId).placeholder
-    }
-    fetch('/categories/' + categoryId, {
-        method: 'PUT',
-        body: JSON.stringify({
-            categoryId: categoryId,
-            categoryName: document.getElementById('editCategoryName' + categoryId).placeholder,
-            categoryStatus: Boolean(document.getElementById('editCategoryStatus' + categoryId).value),
-            categoryComments: comments
-        })
-    })
+// //editing category
+// function editCategory(categoryId){
+//     comments = document.getElementById('editCategoryComments' + categoryId).value
+//     if(comments == 0){
+//         comments = document.getElementById('editCategoryComments' + categoryId).placeholder
+//     }
+//     fetch('/categories/' + categoryId, {
+//         method: 'PUT',
+//         body: JSON.stringify({
+//             categoryId: categoryId,
+//             categoryName: document.getElementById('editCategoryName' + categoryId).placeholder,
+//             categoryStatus: Boolean(document.getElementById('editCategoryStatus' + categoryId).value),
+//             categoryComments: comments
+//         })
+//     })
 
-    .then(() => window.location.href="/enquiries");
-}
+//     .then(() => window.location.href="/enquiries");
+// }
 
-// Delete Category
-function deleteCategory(categoryId){
-    fetch('/categories/' + categoryId, {
-        method: 'DELETE'
-    })
-    .then(() => window.location.href="/categories");
-}
+// // Delete Category
+// function deleteCategory(categoryId){
+//     fetch('/categories/' + categoryId, {
+//         method: 'DELETE'
+//     })
+//     .then(() => window.location.href="/categories");
+// }
 
 // Search Category
-function searchCategory(){
-    searchBy = document.getElementById('searchBy').value
-    searchConstraint = document.getElementById('searchConstraint').value
-    fetch('/categories/' + searchBy + '/' + searchConstraint, {
-        method: 'GET'
-    })
-    .then(() => window.location.href="/categories/" + searchBy + '/' + searchConstraint);
-}
+// function searchCategory(){
+//     searchBy = document.getElementById('searchBy').value
+//     searchConstraint = document.getElementById('searchConstraint').value
+//     fetch('/categories/' + searchBy + '/' + searchConstraint, {
+//         method: 'GET'
+//     })
+//     .then(() => window.location.href="/categories/" + searchBy + '/' + searchConstraint);
+// }
 
 //editing category
-function editCategory(categoryId){
-    comments = document.getElementById('editCategoryComments' + categoryId).value
-    if(comments == 0){
-        comments = document.getElementById('editCategoryComments' + categoryId).placeholder
-    }
-    fetch('/categories/' + categoryId, {
-        method: 'PUT',
-        body: JSON.stringify({
-            categoryId: categoryId,
-            categoryName: document.getElementById('editCategoryName' + categoryId).placeholder,
-            categoryStatus: Boolean(document.getElementById('editCategoryStatus' + categoryId).value),
-            categoryComments: comments
-        })
-    })
+// function editCategory(categoryId){
+//     comments = document.getElementById('editCategoryComments' + categoryId).value
+//     if(comments == 0){
+//         comments = document.getElementById('editCategoryComments' + categoryId).placeholder
+//     }
+//     fetch('/categories/' + categoryId, {
+//         method: 'PUT',
+//         body: JSON.stringify({
+//             categoryId: categoryId,
+//             categoryName: document.getElementById('editCategoryName' + categoryId).placeholder,
+//             categoryStatus: Boolean(document.getElementById('editCategoryStatus' + categoryId).value),
+//             categoryComments: comments
+//         })
+//     })
 
-    .then(() => window.location.href="/categories");
-}
+//     .then(() => window.location.href="/categories");
+// }
 
 // Back to categories
 function categoryBack(){
