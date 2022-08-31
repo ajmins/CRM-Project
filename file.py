@@ -2,7 +2,7 @@ import csv
 import json
 import os
 
-
+course_set = set()
 # create a csv file
 if(os.path.exists("users.csv")):
     pass
@@ -19,6 +19,9 @@ with open('stud_course_database.csv', 'r') as csvfile:
     data = []
     names = []
     phones = []
+
+
+
     for row in csv.reader(csvfile):
         temp = []
         if row[2].strip().upper() not in courses:
@@ -47,20 +50,46 @@ with open('stud_course_database.csv', 'r') as csvfile:
     print(courses)
     print(len(courses))
 
+    # convert list to set
+    course_set = set(courses)
+    print(course_set)
+    print(len(course_set))
+
+
     java_category = [i for i in courses if 'JAVA' in i]
-    print(java_category)
+    #print(java_category)
+    java_category_set = set(java_category)
+    course_set = course_set - java_category_set
+    print(course_set)
+    print(len(course_set))
 
     python_category = [i for i in courses if 'PYTHON' in i]
-    print(python_category)
+    #print(python_category)
+    python_category_set = set(python_category)
+    course_set = course_set - python_category_set
+    print(course_set)
+    print(len(course_set))
+
+
 
     dot_net_category = [i for i in courses if 'NET' in i]
-    print(dot_net_category)
+    #print(dot_net_category)
+    dot_net_category_set = set(dot_net_category)
+    course_set = course_set - dot_net_category_set
+    print(course_set)
+    print(len(course_set))
+
 
     test_category = [i for i in courses if 'TEST' in i]
-    print(test_category)
+    #print(test_category)
+    test_category_set = set(test_category)
+    course_set = course_set - test_category_set
+    print(course_set)
+    print(len(course_set))
+    
 
     other_category = [i for i in courses if i not in java_category and i not in python_category and i not in dot_net_category and i not in test_category]
-    print(other_category)
+    #print(other_category)
 
     with open('courses.csv', 'w') as csvfile:
         writer = csv.writer(csvfile)
