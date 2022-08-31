@@ -32,30 +32,11 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action"
-                    onClick="searchCourse('')">Search
+                    onClick="searchCourse()">Search
                     <i class="material-icons right">search</i>
                 </button>
             </div>
         </div>
-    </div>
-
-    <a href="#modal6" class="calendar-btn btn-flat waves-effect waves-orange tooltipped" data-position="bottom"
-    data-tooltip="Search by date" onclick="$('#modal6').modal('open');"><i class="material-icons">calendar_month</i></a>
-    
-    <div id="modal6" class="modal">
-        <div class="modal-content">
-            <div class="center">
-                <div class="row">
-                    <div class="input-field">
-                        <input id="branchStartDateSearch" type="text" class="datepicker" placeholder="Pick a start date">
-                    </div>
-                </div>
-                <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action"
-                    onClick="searchCourse('date')">Search
-                    <i class="material-icons right">search</i>
-                </button>
-            </div>
-        </div> 
     </div>
 
     <a href="#modal2" class="btn waves-effect waves-light orange modal-trigger"
@@ -88,9 +69,8 @@
                     </div>
                     <div class="input-field col s6">
                         <select name="courseStatus" id="editCourseStatus" >
-                            <option value='False' >DISABLE</option>
                             <option value='True' >ENABLE</option>
-                            
+                            <option value='' >DISABLE</option>   
                         </select>
                         <label>Course Status</label>
                     </div>
@@ -103,8 +83,12 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
-                        <textarea name="courseInstructorId" id="editcourseInstructorId" class="materialize-textarea" ></textarea>
-                        <label for="courseInstructorId">course Instructor Id</label>
+                        <select name="courseInstructorId" id="editcourseInstructorId" class="materialize-textarea" >
+                            {% for instructor in instructors %}
+                            <option value='{{ instructor.instructorId }}'>{{ instructor.instructorName }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="courseInstructorId">Course Instructor</label>
                     </div>
                     <div class="input-field col s6">
                         <select name="courseMinQualification" id="qualificationId">
@@ -156,30 +140,25 @@
 
     <div id="modal3" class="modal">
         <div class="modal-content">
-            <form action="#">
-                <p>
+            <h6 class="card-title">Filter by status</h6>
+            <div class="content-container row">
+                <p class="col s6">
                     <label>
-                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Filter 1</span>
+                        <input name="checkbox" type="checkbox" class="filterCheckbox checkbox-orange" value="1"/>
+                        <span>ENABLED</span>
                     </label>
                 </p>
-                <p>
+                <p class="col s6">
                     <label>
-                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Filter 2</span>
+                        <input name="checkbox" type="checkbox" class="filterCheckbox checkbox-orange" value="0"/>
+                        <span>DISABLED</span>
                     </label>
                 </p>
-                <p>
-                    <label>
-                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Filter 3</span>
-                    </label>
-                </p>
-            </form>
+            </div>
         </div>
         <div class="modal-footer">
-            <a href="#" class="modal-close waves-effect waves-orange btn-flat">Apply</a>
-            <a href="#" class="waves-effect waves-orange btn-flat" onclick="clearFilters()">Clear</a>
+            <a href="#" class="modal-close waves-effect waves-orange btn-flat" onClick="applyCourseFilters()">Apply</a>
+            <a href="#" class="waves-effect waves-orange btn-flat" onClick="clearFilters()">Clear</a>
         </div>
     </div>
     {% if courses|count != 0 %}
@@ -203,10 +182,8 @@
         <div id="{{ course.courseId }}" class="modal">
             <div class="modal-content">
                 <form action="">
-                    <input type="text" name="methordId" value="put" hidden>
                     <div class="row">
                         <div class="input-field col s12">
-                            
                             <select name="courseCategoryId" id="editCourseCategoryId{{ course.courseId }}">
                                 {% for category in categories %}
                                 <option value='{{ category.categoryId }}'>{{category.categoryId }} - {{ category.categoryName}}</option>
@@ -245,8 +222,12 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <textarea name="courseInstructorId" id="editcourseInstructorId{{ course.courseId }}" class="materialize-textarea" >{{ course.courseInstructorID }}</textarea>
-                            <label for="courseInstructorId">Course Instructor Id</label>
+                            <select name="courseInstructorId" id="editcourseInstructorId{{ course.courseId }}" class="materialize-textarea" >
+                                {% for instructor in instructors %}
+                                <option value='{{ instructor.instructorId }}'>{{ instructor.instructorName }}</option>
+                                {% endfor %}
+                            </select>
+                            <label for="courseInstructorId">Course Instructor</label>
                         </div>
                         <div class="input-field col s6">
                             <select name="courseMinQualificationId" id="editCourseMinQualificationId{{ course.courseId }}">
@@ -278,7 +259,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <textarea name="courseUrl" id="editCourseUrl{{ course.courseId}}" class="materialize-textarea">{{course.courseVideoLink}}</textarea>
+                            <textarea name="courseUrl" id="editCourseUrl{{ course.courseId }}" class="materialize-textarea">{{course.courseVideoLink}}</textarea>
                             <label for="courseUrl">Course Video Link</label>
                         </div>
                     </div>
