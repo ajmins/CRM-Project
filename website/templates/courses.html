@@ -202,14 +202,14 @@
         </a>
         <div id="{{ course.courseId }}" class="modal">
             <div class="modal-content">
-                <form action="" method="post">
+                <form action="">
                     <input type="text" name="methordId" value="put" hidden>
                     <div class="row">
                         <div class="input-field col s12">
                             
-                            <select name="courseCategoryId" id="courseCategoryId">
+                            <select name="courseCategoryId" id="editCourseCategoryId{{ course.courseId }}">
                                 {% for category in categories %}
-                                <option value='{{ category.courseId }}'>{{category.categoryId }} - {{ category.categoryName}}</option>
+                                <option value='{{ category.categoryId }}'>{{category.categoryId }} - {{ category.categoryName}}</option>
                                 {% endfor %}
                             </select>
                             <label>Category</label>
@@ -239,29 +239,29 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <textarea name="courseDescription" id="editCourseDescription{{ course.courseDescription }}" class="materialize-textarea" >{{ course.courseDescription }}</textarea>
+                            <textarea name="courseDescription" id="editCourseDescription{{ course.courseId }}" class="materialize-textarea" >{{ course.courseDescription }}</textarea>
                             <label for="courseDescription">Course Description</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <textarea name="courseInstructorId" id="editcourseInstructorId{{ course.courseInstructorID }}" class="materialize-textarea" >{{ course.courseInstructorID }}</textarea>
+                            <textarea name="courseInstructorId" id="editcourseInstructorId{{ course.courseId }}" class="materialize-textarea" >{{ course.courseInstructorID }}</textarea>
                             <label for="courseInstructorId">Course Instructor Id</label>
                         </div>
                         <div class="input-field col s6">
-                            <select name="batchCourseId" id="batchCourseId">
+                            <select name="courseMinQualificationId" id="editCourseMinQualificationId{{ course.courseId }}">
                                 {% for qua in qualifications %}
                                     {% if qua.qualificationStatus %}
                                 <option value='{{ qua.qualificationId }}'>{{qua.qualificationId }} - {{ qua.qualificationName}}</option>
                                     {% endif %}
                                 {% endfor %}
                             </select>
-                            <label for="courseMinQualification">Course Min. Qualification</label>
+                            <label for="courseMinQualificationId">Course Min. Qualification</label>
                         </div>                        
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <textarea name="courseBatchSize" id="editcourseBatchSize{{ course.courseBatchSize }}" class="materialize-textarea" >{{ course.courseBatchSize }}</textarea>
+                            <textarea name="courseBatchSize" id="editcourseBatchSize{{ course.courseId }}" class="materialize-textarea" >{{ course.courseBatchSize }}</textarea>
                             <label for="courseBatchSize">Course BatchSize </label>
                         </div>
                         <div class="input-field col s6">
@@ -278,12 +278,12 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <textarea name="courseUrl" id="editCourseUrl{{ course.courseVideoLink}}" class="materialize-textarea">{{course.courseVideoLink}}</textarea>
+                            <textarea name="courseUrl" id="editCourseUrl{{ course.courseId}}" class="materialize-textarea">{{course.courseVideoLink}}</textarea>
                             <label for="courseUrl">Course Video Link</label>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="modal-close btn-flat waves-effect waves-orange" onClick="editCourse('{{ course.courseId }}')">Submit
+                        <button class="modal-close btn-flat waves-effect waves-orange" onClick="editCourse('{{ course.courseId }}')">Submit
                             <i class="material-icons right">send</i>
                         </button>
                     </div>

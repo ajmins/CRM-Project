@@ -120,46 +120,10 @@ def searchBatch(searchBy, searchConstraint):
         batches = Batches.query.filter(Batches.batchStartDate.like("%"+searchConstraint+"%")).all()
 
     courses = Courses.query.with_entities(Courses.courseId, Courses.courseName).distinct().all()
-    categories = Category.query.with_enitities(Category.categoryId, Category.categoryName).distinct().all()
+    categories = Category.query.with_entities(Category.categoryId, Category.categoryName).distinct().all()
     return render_template('batches.html', batches=batches[::-1], listAll=False, courses=courses, categories=categories)
 
     return render_template('batches.html', batches=batches, listAll=False)
-
-
-@views.route('/categories', methods=['GET', 'POST'])
-def categories():
-    if request.method == 'POST':
-        categoryId = request.form.get('categoryId')
-        categoryName = request.form.get('categoryName')
-        categoryStatus = bool(request.form.get('categoryStatus'))
-        categoryComments = request.form.get('categoryComments')
-        print(categoryId, categoryName, categoryStatus, categoryComments)
-        new_category = Category(categoryId=categoryId, categoryName=categoryName, categoryStatus=categoryStatus, categoryComments=categoryComments)
-        db.session.add(new_category)
-        db.session.commit()
-    categories=Category.query.all()
-    return render_template('categories.html', categories=categories, listAll=True)
-
-@views.route('/categories/<categoryId>', methods=['DELETE'])
-def deleteCategory(categoryId):
-    category = Category.query.get(categoryId)
-    if category:
-        db.session.delete(category)
-        db.session.commit()
-    return jsonify({})
-
-@views.route('/categories/<searchBy>/<searchConstraint>')
-def searchCategory(searchBy, searchConstraint):
-    if searchBy == 'id':
-        categories = Category.query.filter(Category.categoryId.like("%"+searchConstraint+"%")).all()
-    elif searchBy == 'name':
-        categories = Category.query.filter(Category.categoryName.like("%"+searchConstraint+"%")).all()
-    return render_template('categories.html', categories=categories, listAll=False)
-
-@views.route('/qualifications')
-def qualifications():
-    return render_template('qualification.html')
-
 
 @views.route('/enquiries', methods=['GET', 'POST'])
 def enquiries():
@@ -215,52 +179,139 @@ def editEnquiry(enquiryId):
 @views.route('/courses', methods=['GET', 'POST'])
 def courses():
     if request.method == 'POST':
-        if request.form.get('methordId') == 'put':
-            courseName = request.form.get('courseName')
-            courseCategoryId = request.form.get('courseCategoryId')
-            courseDuration = request.form.get('courseDuration')
-            courseMinQualification = request.form.get('courseMinQualification')
-            courseInstructorId = request.form.get('courseInstructorId')
-            courseStatus = request.form.get('courseStatus') in ['true', 'True', '1']
-            courseDescription = request.form.get('courseDescription')
-            courseBatchSize = request.form.get('courseBatchSize')
-            courseSyllabus = request.form.get('courseSyllabus')
-            courseVideoLink = request.form.get('courseUrl')
-            courseId = request.form.get('courseId')
-            print(courseId)
-            c = Courses.query.filter(courseId==courseId).first()
-            print(c)
-            c.courseName = courseName
-            c.courseCategoryId = courseCategoryId
-            c.courseDuration = courseDuration
-            c.courseMinQualification = courseMinQualification
-            c.courseInstructorId = courseInstructorId
-            c.courseStatus = courseStatus
-            c.courseDescription = courseDescription
-            c.courseBatchSize = courseBatchSize
-            #c.courseSyllabus = courseSyllabus
-            c.courseVideoLink = courseVideoLink
-            db.session.commit()
-
-            return render_template('courses.html', courses = Courses.query.all(), categories = Category.query.all(), qualifications = Qualifications.query.all()) 
-        else:
-            courseName = request.form.get('courseName')
-            courseCategoryId = request.form.get('courseCategoryId')
-            courseDuration = request.form.get('courseDuration')
-            courseMinQualification = request.form.get('courseMinQualification')
-            courseInstructorId = request.form.get('courseInstructorId')
-            courseStatus = request.form.get('courseStatus') in ['true', 'True', '1']
-            courseDescription = request.form.get('courseDescription')
-            courseBatchSize = request.form.get('courseBatchSize')
-            courseSyllabus = request.form.get('courseSyllabus')
-            courseVideoLink = request.form.get('courseUrl')
-            courseId = courseCategoryId+courseName+'0'
-            for i in Courses.query.all():
-                if i.courseId == courseId:
-                    courseId = courseCategoryId+courseName+str(int(i.courseId[-1])+1)
-            course = Courses(courseName=courseName, courseId=courseId, courseCategoryId=courseCategoryId, courseDuration=courseDuration, courseMinQualificationId=courseMinQualification, courseInstructorID=courseInstructorId, courseStatus=courseStatus, courseDescription=courseDescription, courseBatchSize=courseBatchSize, courseVideoLink=courseVideoLink, courseSyllabus=None)
-            db.session.add(course)
-            db.session.commit()
-            return render_template('courses.html', courses=Courses.query.all(), categories= Category.query.all(), qualifications= Qualifications.query.all())
+        courseName = request.form.get('courseName')
+        courseCategoryId = request.form.get('courseCategoryId')
+        courseDuration = request.form.get('courseDuration')
+        courseMinQualification = request.form.get('courseMinQualification')
+        courseInstructorId = request.form.get('courseInstructorId')
+        courseStatus = request.form.get('courseStatus') in ['true', 'True', '1']
+        courseDescription = request.form.get('courseDescription')
+        courseBatchSize = request.form.get('courseBatchSize')
+        courseSyllabus = request.form.get('courseSyllabus')
+        courseVideoLink = request.form.get('courseUrl')
+        courseId = courseCategoryId+courseName+'0'
+        for i in Courses.query.all():
+            if i.courseId == courseId:
+                courseId = courseCategoryId+courseName+str(int(i.courseId[-1])+1)
+        course = Courses(courseName=courseName, courseId=courseId, courseCategoryId=courseCategoryId, courseDuration=courseDuration, courseMinQualificationId=courseMinQualification, courseInstructorID=courseInstructorId, courseStatus=courseStatus, courseDescription=courseDescription, courseBatchSize=courseBatchSize, courseVideoLink=courseVideoLink, courseSyllabus=None)
+        db.session.add(course)
+        db.session.commit()
+        return render_template('courses.html', courses=Courses.query.all(), categories= Category.query.all(), qualifications= Qualifications.query.all())
     else:
         return render_template('courses.html', courses = Courses.query.all(), categories = Category.query.all(), qualifications = Qualifications.query.all())
+
+@views.route('/courses/<courseId>', methods=['PUT', 'PATCH'])
+def editCourse(courseId):
+    c = Courses.query.get_or_404(courseId)
+    value = json.loads(request.data)
+    courseName = value['courseName']
+    courseCategoryId = value['courseCategoryId']
+    courseDuration = value['courseDuration']
+    courseStatus = value['courseStatus'] in ['true', 'True', '1']
+    courseDescription = value['courseDescription']
+    courseMinQualification = value['courseMinQualificationId']
+    courseBatchSize = value['courseBatchSize']
+    courseInstructorId = value['courseInstructorId']
+    #courseSyllabus = request.form.get['courseSyllabus']
+    courseVideoLink = value['courseUrl']
+    print(value)
+
+    c.courseName = courseName
+    c.courseCategoryId = courseCategoryId
+    c.courseDuration = courseDuration
+    c.courseMinQualification = courseMinQualification
+    c.courseInstructorId = courseInstructorId
+    c.courseStatus = courseStatus
+    c.courseDescription = courseDescription
+    c.courseBatchSize = courseBatchSize
+    #c.courseSyllabus = courseSyllabus
+    c.courseVideoLink = courseVideoLink
+    db.session.add(c)
+    db.session.commit()
+    return jsonify({})
+
+#qualification code
+@views.route('/qualification', methods=['GET', 'POST'])
+def qualifications():
+    if request.method == 'POST':
+        # qualificationId = qualificationId
+        qualificationName = request.form.get('qualificationName')
+        qualificationStatus = bool(request.form.get('qualificationStatus'))
+        print( qualificationName, qualificationStatus)
+        new_qualification = Qualifications(qualificationName=qualificationName, qualificationStatus=qualificationStatus)
+        db.session.add(new_qualification)
+        db.session.commit()
+    qualifications=Qualifications.query.all()
+    return render_template('qualification.html',qualifications=qualifications[::-1], listAll=True)
+
+@views.route('/qualification/<qualificationId>', methods=['DELETE'])
+def deleteQualification(qualificationId):
+    qual = Qualifications.query.get(qualificationId)
+    if qual:
+        db.session.delete(qual)
+        db.session.commit()
+    return jsonify({})
+
+@views.route('/qualification/<searchBy>/<searchConstraint>')
+def searchQualification(searchBy, searchConstraint):
+    if searchBy == 'id':
+        qualifications = Qualifications.query.filter(Qualifications.qualificationId.like("%"+searchConstraint+"%")).all()
+    elif searchBy == 'name':
+        qualifications = Qualifications.query.filter(Qualifications.qualificationName.like("%"+searchConstraint+"%")).all()
+    return render_template('qualification.html', qualifications=qualifications, listAll=False)
+
+@views.route('/qualification/<qualificationId>', methods=['PUT','PATCH'])
+def editQualification(qualificationId):
+    qual = Qualifications.query.get_or_404(qualificationId)
+    value = json.loads(request.data)
+    qual.qualificationName=value['qualificationName']
+    qual.qualificationStatus=bool(value['qualificationStatus'])
+    db.session.add(qual)
+    print(value)
+    db.session.commit()
+    print(value)
+    return jsonify({})
+
+#categories code
+@views.route('/categories', methods=['GET', 'POST'])
+def categories():
+    if request.method == 'POST':
+        #batchId = "BA" + f"{(len(Batches.query.all())):03}"
+        categoryId = "CA"+ f"{(len(Category.query.all())):03}"
+        categoryName = request.form.get('categoryName')
+        categoryStatus = bool(request.form.get('categoryStatus'))
+        categoryComments = request.form.get('categoryComments')
+        print(categoryId, categoryName, categoryStatus, categoryComments)
+        new_category = Category(categoryId=categoryId, categoryName=categoryName, categoryStatus=categoryStatus, categoryComments=categoryComments)
+        db.session.add(new_category)
+        db.session.commit()
+    categories=Category.query.all()
+    return render_template('categories.html', categories=categories[::-1], listAll=True)
+
+@views.route('/categories/<categoryId>', methods=['DELETE'])
+def deleteCategory(categoryId):
+    category = Category.query.get(categoryId)
+    if category:
+        db.session.delete(category)
+        db.session.commit()
+    return jsonify({})
+
+@views.route('/categories/<searchBy>/<searchConstraint>')
+def searchCategory(searchBy, searchConstraint):
+    if searchBy == 'id':
+        categories = Category.query.filter(Category.categoryId.like("%"+searchConstraint+"%")).all()
+    elif searchBy == 'name':
+        categories = Category.query.filter(Category.categoryName.like("%"+searchConstraint+"%")).all()
+    return render_template('categories.html', categories=categories, listAll=False)
+
+@views.route('/categories/<categoryId>', methods=['PUT','PATCH'])
+def editCategory(categoryId):
+    category = Category.query.get_or_404(categoryId)
+    value = json.loads(request.data)
+    category.categoryId=value['categoryId']
+    category.categoryName=value['categoryName']
+    category.categoryStatus=value['categoryStatus']
+    category.categoryComments=value['categoryComments']
+    db.session.add(category)
+    db.session.commit()
+    return jsonify({})
