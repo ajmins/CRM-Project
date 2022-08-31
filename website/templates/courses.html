@@ -1,0 +1,350 @@
+{% extends "base.html" %}
+{% block title %}Courses{% endblock %}
+{% block content %}
+{% if not listAll %}
+<div class="back col s3">
+    <button class="back-btn btn-flat btn-medium waves-effect waves-orange" onClick="courseBack()">
+        <i class="material-icons">arrow_back</i>
+    </button>
+</div>
+{% endif %}
+<div class="buttons col s9">
+    <a href="#modal1" id="searchBtn" class="btn waves-effect waves-light orange"
+        onclick="$('#modal1').modal('open');">Search
+        <i class="material-icons white-text ">search</i>
+    </a>
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div class="search-bar row">
+                <div class="input-field col s3">
+                    <select name="searchBy" id="searchBy">
+                        <option value='id' selected>Id</option>
+                        <option value='name'>Name</option>
+                    </select>
+                    <label>Search By</label>
+                </div>
+                <div class="input-field col s9">
+                    <i class="material-icons prefix black-text">search</i>
+                    <input name="searchConstraint" id="searchConstraint" type="text" class="validate">
+                    <label for="searchConstraint">Search Course</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action"
+                    onClick="searchCourse('')">Search
+                    <i class="material-icons right">search</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <a href="#modal6" class="calendar-btn btn-flat waves-effect waves-orange tooltipped" data-position="bottom"
+    data-tooltip="Search by date" onclick="$('#modal6').modal('open');"><i class="material-icons">calendar_month</i></a>
+    
+    <div id="modal6" class="modal">
+        <div class="modal-content">
+            <div class="center">
+                <div class="row">
+                    <div class="input-field">
+                        <input id="branchStartDateSearch" type="text" class="datepicker" placeholder="Pick a start date">
+                    </div>
+                </div>
+                <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action"
+                    onClick="searchCourse('date')">Search
+                    <i class="material-icons right">search</i>
+                </button>
+            </div>
+        </div> 
+    </div>
+
+    <a href="#modal2" class="btn waves-effect waves-light orange modal-trigger"
+        onclick="$('#modal2').modal('open');">Add course
+        <i class="material-icons right">add</i>
+    </a>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select name="courseCategoryId" id="categoryId">
+                            {% for category in categories %}
+                            <option value='{{ category.categoryId }}'>{{category.categoryId }} - {{ category.categoryName}}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Category</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <textarea name="courseName" id="editCourseName" class="materialize-textarea" ></textarea>
+                        <label for="courseName">Course Name</label>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <textarea type="text" name="courseDuration" id="editCourseDuration" class="materialize-textarea"></textarea>
+                        <label>Course Duration</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="courseStatus" id="editCourseStatus" >
+                            <option value='False' >DISABLE</option>
+                            <option value='True' >ENABLE</option>
+                            
+                        </select>
+                        <label>Course Status</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea name="courseDescription" id="editCourseDescription" class="materialize-textarea" ></textarea>
+                        <label for="courseDescription">Course Description</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <textarea name="courseInstructorId" id="editcourseInstructorId" class="materialize-textarea" ></textarea>
+                        <label for="courseInstructorId">course Instructor Id</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="courseMinQualification" id="qualificationId">
+                            {% for qua in qualifications %}
+                                {% if qua.qualificationStatus %}
+                            <option value='{{ qua.qualificationId }}'>{{qua.qualificationId }} - {{ qua.qualificationName}}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <label for="courseMinQualification">Course Min. Qualification</label>
+                    </div>                        
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <textarea name="courseBatchSize" id="editcourseBatchSize" class="materialize-textarea" ></textarea>
+                        <label for="courseBatchSize">Course BatchSize </label>
+                    </div>
+                    <div class="input-field col s6">
+                        <div class="file-field input-field">
+                            <div class="btn">
+                                <span>File</span>
+                                <input name="courseSyllabus" id="editSyallbus" type="file" class="materialize">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Upload Syllabus in PDF">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea name="courseUrl" id="editCourseUrl" class="materialize-textarea"></textarea>
+                        <label for="courseUrl">Course Video Link</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action"
+                        onClick="addCourse()">Add
+                        <i class="material-icons right">add</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <a href="#modal3" class="filter-btn btn-flat modal-trigger btn-medium waves-effect waves-orange"
+        onclick="$('#modal3').modal('open');"><i class="material-icons">filter_list</i></a>
+
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <form action="#">
+                <p>
+                    <label>
+                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
+                        <span>Filter 1</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
+                        <span>Filter 2</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
+                        <span>Filter 3</span>
+                    </label>
+                </p>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-orange btn-flat">Apply</a>
+            <a href="#" class="waves-effect waves-orange btn-flat" onclick="clearFilters()">Clear</a>
+        </div>
+    </div>
+    {% if courses|count != 0 %}
+        {% if courses|count == 1 %}
+        <span class="card-subtitle center"><em>Showing {{ courses|count }} result</em></span>
+        {% else %}
+        <span class="card-subtitle center"><em>Showing {{ courses|count }} results</em></span>
+        {% endif %}
+    {% endif %}
+</div>
+{% if courses|length == 0 %}
+<p class="center empty-content">There are no courses to show</p>
+{% else %}
+{% for course in courses %}
+<div class="card">
+    <div class="row right">
+        <a href="#{{ course.courseId }}" class="modal-trigger btn-flat green-text waves-effect waves-green"
+            >Edit
+            <i class="material-icons green-text right">edit</i>
+        </a>
+        <div id="{{ course.courseId }}" class="modal">
+            <div class="modal-content">
+                <form action="" method="post">
+                    <input type="text" name="methordId" value="put" hidden>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            
+                            <select name="courseCategoryId" id="courseCategoryId">
+                                {% for category in categories %}
+                                <option value='{{ category.courseId }}'>{{category.categoryId }} - {{ category.categoryName}}</option>
+                                {% endfor %}
+                            </select>
+                            <label>Category</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <textarea name="courseName" id="editCourseName{{ course.courseId }}" class="materialize-textarea" >{{ course.courseName }}</textarea>
+                            <label for="courseName">Course Name</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <textarea name="courseId" id="editCourseId{{ course.courseId }}" class="materialize-textarea" disabled>{{course.courseId}}</textarea>
+                            <label for="courseId">Course Id</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <textarea type="text" name="courseDuration" id="editCourseDuration{{ course.courseId }}" class="materialize-textarea" placeholder="{{ course.courseDuration }}"></textarea>
+                            <label>Course Duration</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <select name="CourseStatus" id="editCourseStatus{{ course.courseId }}" >
+                                <option value='False' >DISABLE</option>
+                                <option value='True' >ENABLE</option>
+                                
+                            </select>
+                            <label>Course Status</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea name="courseDescription" id="editCourseDescription{{ course.courseDescription }}" class="materialize-textarea" >{{ course.courseDescription }}</textarea>
+                            <label for="courseDescription">Course Description</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <textarea name="courseInstructorId" id="editcourseInstructorId{{ course.courseInstructorID }}" class="materialize-textarea" >{{ course.courseInstructorID }}</textarea>
+                            <label for="courseInstructorId">Course Instructor Id</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <select name="batchCourseId" id="batchCourseId">
+                                {% for qua in qualifications %}
+                                    {% if qua.qualificationStatus %}
+                                <option value='{{ qua.qualificationId }}'>{{qua.qualificationId }} - {{ qua.qualificationName}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            <label for="courseMinQualification">Course Min. Qualification</label>
+                        </div>                        
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <textarea name="courseBatchSize" id="editcourseBatchSize{{ course.courseBatchSize }}" class="materialize-textarea" >{{ course.courseBatchSize }}</textarea>
+                            <label for="courseBatchSize">Course BatchSize </label>
+                        </div>
+                        <div class="input-field col s6">
+                            <div class="file-field input-field">
+                                <div class="btn">
+                                    <span>File</span>
+                                    <input id="editSyallbus" type="file" class="materialize">
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" placeholder="Upload Syllabus in PDF">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea name="courseUrl" id="editCourseUrl{{ course.courseVideoLink}}" class="materialize-textarea">{{course.courseVideoLink}}</textarea>
+                            <label for="courseUrl">Course Video Link</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="modal-close btn-flat waves-effect waves-orange" onClick="editCourse('{{ course.courseId }}')">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if course.users|count == 0 %}
+        <a class="btn-flat red-text waves-effect waves-red tooltipped" data-position="top"
+            data-tooltip="There are no enrollments for this course. This can be deleted." onClick="deleteCourse('{{ course.courseId }}')">Delete
+            <i class="material-icons red-text right">delete</i>
+        </a>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col s10">
+            <h1 class="card-title">
+                {{ course.courseName }}
+            </h1>
+            <span class="card-subtitle"><em>CourseId : {{ course.courseId }}</em></span>
+            <p class="card-subtitle"><em>Course Name : {{ course.courseName }}</em></p>
+            <p>
+                <strong>Category </strong> : {{ course.courseCategoryId }}
+            </p>
+            <p>
+                <strong>Course Duration</strong> : {{ course.courseDuration }}
+            </p>
+            <p>
+                <strong>course Description</strong> : {{ course.courseDescription }}
+            </p>
+            <p>
+                <strong>Instructor</strong> : {{ course.courseInstructorID }}
+            </p>
+            <p>
+                <strong>Min. Qualification</strong> : {{ course.courseMinQualificationId }}
+            </p>
+            <p>
+                <strong>Batch Size</strong> : {{ course.courseBatchSize }}
+            </p>
+            <p>
+                <url>Video Link</url> : {{ course.courseVideoLink }}
+            </p>
+            <p>
+                <a href="">Downlaod Syllabus</a>
+            </p>
+        </div>
+        <div class="col s2 right">
+            <div class="switch">
+                <label>
+                  DISABLED
+                  {% if course.courseStatus %}
+                  <input id="courseSwitch" name='courseClose' type="checkbox" onClick="toggleCourse()" value="ENABLED" checked disabled>
+                  {% else %}
+                  <input id="courseSwitch" name='courseClose' type="checkbox" onClick="toggleCourse()" value="ENABLED" disabled>
+                  {% endif %}
+                  <span class="lever"></span>
+                  ENABLED
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

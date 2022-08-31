@@ -1,75 +1,253 @@
-{% extends "base.html" %} 
-{% block title %}Batches{% endblock %} 
+{% extends "base.html" %}
+{% block title %}Batches{% endblock %}
 {% block content %}
-<div class="buttons">
-    <div class="search-bar">
-        <div class="input-field">
-            <i class="material-icons prefix black-text">search</i>
-            <input id="icon_prefix" type="text" class="validate">
-            <label for="icon_prefix">Search Course</label>
-        </div>
-    </div>
-
-    <a id="searchBtn" class="btn waves-effect white-text waves-light orange"><i class="material-icons white-text right">search</i>Search</a>
-
-    <a href="#modal1" class="filter-btn btn-flat modal-trigger btn-medium waves-effect waves-orange"
-        onclick="$('#modal1').modal('open');"><i class="material-icons">filter_list</i></a>
+{% if not listAll %}
+<div class="back col s3">
+    <button class="back-btn btn-flat btn-medium waves-effect waves-orange" onClick="batchBack()">
+        <i class="material-icons">arrow_back</i>
+    </button>
+</div>
+{% endif %}
+<div class="buttons col s9">
+    <a href="#modal1" id="searchBtn" class="btn waves-effect waves-light orange"
+        onclick="$('#modal1').modal('open');">Search
+        <i class="material-icons white-text ">search</i>
+    </a>
 
     <div id="modal1" class="modal">
         <div class="modal-content">
+            <div class="search-bar row">
+                <div class="input-field col s3">
+                    <select name="searchBy" id="searchBy">
+                        <option value='id' selected>Id</option>
+                        <option value='name'>Name</option>
+                    </select>
+                    <label>Search By</label>
+                </div>
+                <div class="input-field col s9">
+                    <i class="material-icons prefix black-text">search</i>
+                    <input name="searchConstraint" id="searchConstraint" type="text" class="validate">
+                    <label for="searchConstraint">Search category</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action"
+                    onClick="searchBatch('')">Search
+                    <i class="material-icons right">search</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <a href="#modal6" class="calendar-btn btn-flat waves-effect waves-orange tooltipped" data-position="bottom"
+    data-tooltip="Search by date" onclick="$('#modal6').modal('open');"><i class="material-icons">calendar_month</i></a>
+    
+    <div id="modal6" class="modal">
+        <div class="modal-content">
+            <div class="center">
+                <div class="row">
+                    <div class="input-field">
+                        <input id="branchStartDateSearch" type="text" class="datepicker" placeholder="Pick a start date">
+                    </div>
+                </div>
+                <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action"
+                    onClick="searchBatch('date')">Search
+                    <i class="material-icons right">search</i>
+                </button>
+            </div>
+        </div> 
+    </div>
+
+    {% if listAll %}
+    <a href="#modal2" class="btn waves-effect waves-light orange modal-trigger"
+        onclick="$('#modal2').modal('open');">Add batch
+        <i class="material-icons right">add</i>
+    </a>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <textarea name="batchName" id="batchName" class="materialize-textarea"></textarea>
+                        <label for="batchName">Enter the batch name</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <textarea name="batchStrength" id="batchStrength" class="materialize-textarea"></textarea>
+                        <label for="batchStrength">Enter the batch strength</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select name="batchCourseId" id="batchCourseId">
+                            {% for course in courses %}
+                            <option value='{{ course.courseId }}'>{{course.courseId }} - {{ course.courseName}}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Batch CourseId</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="BatchStatus" id="batchStatus">
+                            <option value='1'>ENABLED</option>
+                            <option value=''>DISABLED</option>
+                        </select>
+                        <label>Batch Status</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="text" name="batchStartDate" id="batchStartDate" class="datepicker materialize-textarea" placeholder="Pick batch start date"></input>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="text" name="batchEndDate" id="batchEndDate" class="datepicker materialize-textarea" placeholder="Pick batch end date"></input>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <a href="#modal3" class="filter-btn btn-flat modal-trigger btn-medium waves-effect waves-orange"
+        onclick="$('#modal3').modal('open');"><i class="material-icons">filter_list</i></a>
+
+    <div id="modal3" class="modal">
+        <div class="modal-content">
             <form action="#">
-                <p>
-                    <label>
-                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Filter 1</span>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Filter 2</span>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Filter 3</span>
-                    </label>
-                </p>
+                <h6 class="card-title">Filter by status</h6>
+                <div class="content-container row">
+                    <p class="col s6">
+                        <label>
+                            <input name="checkbox" type="checkbox" class="filterCheckbox checkbox-orange" value="1"/>
+                            <span>ENABLED</span>
+                        </label>
+                    </p>
+                    <p class="col s6">
+                        <label>
+                            <input name="checkbox" type="checkbox" class="filterCheckbox checkbox-orange" value="0"/>
+                            <span>DISABLED</span>
+                        </label>
+                    </p>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
-            <a href="#" class="modal-close waves-effect waves-orange btn-flat">Apply</a>
+            <a href="#" class="modal-close waves-effect waves-orange btn-flat" onclick="applyFilters()">Apply</a>
             <a href="#" class="waves-effect waves-orange btn-flat" onclick="clearFilters()">Clear</a>
         </div>
     </div>
+    {% if batches|count != 0 %}
+        {% if batches|count == 1 %}
+        <span class="card-subtitle center"><em>Showing {{ batches|count }} result</em></span>
+        {% else %}
+        <span class="card-subtitle center"><em>Showing {{ batches|count }} results</em></span>
+        {% endif %}
+    {% endif %}
 </div>
-{% for category in categories %}
-    <div class="card">
-        <div class="row right">
-            <a href="#modal3" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal3').modal('open');">Edit
-                <i class="material-icons right">edit</i>
-            </a>
-            <div id="modal3" class="modal">
-                <div class="modal-content">
-                    <h1>Hi</h1>
-                </div>
-            </div>
-            <a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Delete
-                <i class="material-icons right">delete</i>
-            </a>
-            <div id="modal4" class="modal">
-                <div class="modal-content">
-                    <h1>Hi</h1>
-                </div>
+{% if batches|length == 0 %}
+<p class="center empty-content">There are no batches to show</p>
+{% else %}
+{% for batch in batches %}
+<div class="card">
+    <div class="row right">
+        <a href="#{{ batch.batchId }}" class="modal-trigger btn-flat green-text waves-effect waves-green"
+            >Edit
+            <i class="material-icons green-text right">edit</i>
+        </a>
+        <div id="{{ batch.batchId }}" class="modal">
+            <div class="modal-content">
+                <form action="">
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <textarea name="batchName" id="editBatchName{{ batch.batchId }}" class="materialize-textarea" disabled>{{ batch.batchName }}</textarea>
+                            <label for="batchName">Batch name</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <textarea name="batchStrength" id="editBatchStrength{{ batch.batchId }}" class="materialize-textarea" placeholder="{{ batch.batchStrength }}"></textarea>
+                            <label for="batchStrength">Enter the batch strength</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select name="batchCourseId" id="editBatchCourseId{{ batch.batchId }}" disabled>
+                                <option value="{{ batch.batchCourseId }}" selected>{{batch.batchCourseId }}</option>
+                            </select>
+                            <label>Batch CourseId</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <select name="BatchStatus" id="editBatchStatus{{ batch.batchId }}" disabled>
+                                {% if batch.batchStatus %}
+                                <option value='1' >ENABLED</option>
+                                {% else %}
+                                <option value='' >DISABLED</option>
+                                {% endif %}
+                            </select>
+                            <label>Batch Status</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input type="text" name="batchStartDate" id="editBatchStartDate{{ batch.batchId }}" class="datepicker materialize-textarea" placeholder="{{ batch.batchStartDate }}" disabled>
+                        </div>
+                        <div class="input-field col s6">
+                            <input type="text" name="batchEndDate" id="editBatchEndDate{{ batch.batchId }}" class="datepicker materialize-textarea" placeholder="{{ batch.batchEndDate }}" disabled>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="modal-close btn-flat waves-effect waves-orange" onClick="editBatch('{{ batch.batchId }}')">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
-        <h1 class="card-title">
-            {{ category.categoryName }}
-        </h1>
-        <p>
-            {{ category.categoryComments }}
-        </p>
+        {% if batch.users|count == 0 %}
+        <a class="btn-flat red-text waves-effect waves-red tooltipped" data-position="top"
+            data-tooltip="There are no enrollments for this batch. This can be deleted." onClick="deleteBatch('{{ batch.batchId }}')">Delete
+            <i class="material-icons red-text right">delete</i>
+        </a>
+        {% endif %}
     </div>
+    <div class="row">
+        <div class="col s10">
+            <h1 class="card-title">
+                {{ batch.batchName }}
+            </h1>
+            <span class="card-subtitle"><em>BatchId : {{ batch.batchId }}</em></span>
+            <p class="card-subtitle"><em>BatchCourseId : {{ batch.batchCourseId }}</em></p>
+            <p>
+                <strong>Total Strength</strong> : {{ batch.batchStrength }}
+            </p>
+            <p>
+                <strong>Enrollments</strong> : {{ batch.enrollments|count }}
+            </p>
+            <p>
+                <strong>Batch Start Date</strong> : {{ batch.batchStartDate }}
+            </p>
+            <p>
+                <strong>Batch End Date</strong> : {{ batch.batchEndDate }}
+            </p>
+        </div>
+        <div class="col s2 right">
+            <div class="switch">
+                <label>
+                  DISABLED
+                  {% if batch.batchStatus %}
+                  <input id="batchSwitch" name='batchClose' type="checkbox" onClick="toggleBatch()" value="ENABLED" checked disabled>
+                  {% else %}
+                  <input id="batchSwitch" name='batchClose' type="checkbox" onClick="toggleBatch()" value="ENABLED" disabled>
+                  {% endif %}
+                  <span class="lever"></span>
+                  ENABLED
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
 {% endfor %}
+{% endif %}
 {% endblock %}

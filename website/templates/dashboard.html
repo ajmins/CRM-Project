@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="chart">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+    <table id="dataTable" class="centered striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Log In Count</th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            {% for date in dates %}
+            <tr>
+                <td>{{ date.Date }}</td>
+                <td>{{ date.logincount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
