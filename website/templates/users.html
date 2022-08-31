@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+{% if not listAll %}
+<div class="back col s3">
+    <button class="back-btn btn-flat btn-medium waves-effect waves-orange" onClick="userBack()">
+        <i class="material-icons">arrow_back</i>
+    </button>
+</div>
+{% endif %}
+<div class="buttons col s9">
+    <a href="#modal1" id="searchBtn" class="btn waves-effect waves-light orange"
+        onclick="$('#modal1').modal('open');">Search
+        <i class="material-icons white-text ">search</i>
+    </a>
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div class="search-bar row">
+                <div class="input-field col s3">
+                    <select name="searchBy" id="searchBy">
+                        <option value='id' selected>Id</option>
+                        <option value='name'>Name</option>
+                    </select>
+                    <label>Search By</label>
+                </div>
+                <div class="input-field col s9">
+                    <i class="material-icons prefix black-text">search</i>
+                    <input name="searchConstraint" id="searchConstraint" type="text" class="validate">
+                    <label for="searchConstraint">Search user</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action"
+                    onClick="searchUser()">Search
+                    <i class="material-icons right">search</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <a href="#modal2" class="btn waves-effect waves-light orange modal-trigger"
+        onclick="$('#modal2').modal('open');">Add User
+        <i class="material-icons right">add</i>
+    </a>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <form action="" method="post">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <textarea name="batchName" id="batchName" class="materialize-textarea"></textarea>
+                        <label for="batchName">Enter the batch name</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <textarea name="batchStrength" id="batchStrength" class="materialize-textarea"></textarea>
+                        <label for="batchStrength">Enter the batch strength</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select name="batchCourseId" id="batchCourseId">
+                            {% for course in courses %}
+                            <option value='{{ course.courseId }}'>{{course.courseId }} - {{ course.courseName}}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Batch CourseId</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="BatchStatus" id="batchStatus">
+                            <option value='1'>ENABLED</option>
+                            <option value=''>DISABLED</option>
+                        </select>
+                        <label>Batch Status</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input type="text" name="batchStartDate" id="batchStartDate" class="datepicker materialize-textarea" placeholder="Pick batch start date"></input>
+                    </div>
+                    <div class="input-field col s6">
+                        <input type="text" name="batchEndDate" id="batchEndDate" class="datepicker materialize-textarea" placeholder="Pick batch end date"></input>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+    <a href="#modal3" class="filter-btn btn-flat modal-trigger btn-medium waves-effect waves-orange"
+        onclick="$('#modal3').modal('open');"><i class="material-icons">filter_list</i></a>
+
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <form action="#">
+                <h6 class="card-title">Filter by role</h6>
+                <div class="content-container row">
+                    <p class="col s6">
+                        <label>
+                            <input name="checkbox" type="checkbox" class="filterCheckbox checkbox-orange" value="1"/>
+                            <span>User</span>
+                        </label>
+                    </p>
+                    <p class="col s6">
+                        <label>
+                            <input name="checkbox" type="checkbox" class="filterCheckbox checkbox-orange" value="2"/>
+                            <span>Admin</span>
+                        </label>
+                    </p>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-orange btn-flat" onclick="applyRoleFilters()">Apply</a>
+            <a href="#" class="waves-effect waves-orange btn-flat" onclick="clearFilters()">Clear</a>
+        </div>
+    </div>
+    {% if users|count != 0 %}
+        {% if users|count == 1 %}
+        <span class="card-subtitle center"><em>Showing {{ users|count }} result</em></span>
+        {% else %}
+        <span class="card-subtitle center"><em>Showing {{ users|count }} results</em></span>
+        {% endif %}
+    {% endif %}
+</div>
+{% if users|length == 0 %}
+<p class="center empty-content">There are no users to show</p>
+{% else %}
+{% for user in users %}
+<div class="card">
+    <div class="row right">
+        
+        <!-- <a class="btn-flat red-text waves-effect waves-red tooltipped" data-position="top" 
+            data-tooltip="There are no enrollments for this batch. This can be deleted.">Delete
+            <i class="material-icons red-text right">delete</i>
+        </a> -->
+    
+    </div>
+    <div class="row">
+        <div class="col s10">
+            <h1 class="card-title">
+                {{ user.userName }}
+            </h1>
+            <span class="card-subtitle"><em>UserId : {{ user.userId }}</em></span>
+            <p class="card-subtitle"><em>Email : {{ user.userEmail }}</em></p>
+            <p>
+                <strong>Phone</strong> : {{ user.userPhone }}
+            </p>
+            <p>
+                <strong>City</strong> : {{ user.userCity }}
+            </p>
+            <p>
+                <strong>State</strong> : {{ user.userState }}
+            </p>
+            <p>
+                <strong>Country</strong> : {{ user.userCountry }}
+            </p>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}
