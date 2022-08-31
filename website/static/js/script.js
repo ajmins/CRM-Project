@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
     var instances = M.FormSelect.init(elems);
   });
 
+
+
+// Batch 
 // Close/Open Batch
 function toggleBatch(){
     toggleSwitch = document.getElementById('batchSwitch')
@@ -75,6 +78,34 @@ function searchBatch(date){
     .then(() => window.location.href="/batches/" + searchBy + '/' + searchConstraint);
 }
 
+  // Filter user-role Batch
+  function applyRoleFilters() {
+    inputs = document.querySelectorAll(".filterCheckbox:checked");
+    let roles = {
+      roles: []
+    };
+    inputs.forEach(ip => {
+      roles["roles"].push(ip.value);
+    });
+    if (roles["roles"] == []) {
+      window.location.href = "/users";
+    }
+    fetch("/users", {method: "GET"}).then(() => (window.location.href = "/users?roles=" + roles["roles"]));
+  }
+
+  // Filter category-Batch
+  function applyFilters() {
+    inputs = document.querySelectorAll(".filterCheckbox:checked");
+    let categories = {
+      categories: []
+    };
+    inputs.forEach(ip => {
+      categories["categories"].push(ip.value);
+    });
+    fetch("/batches", {method: "GET"}).then(() => (window.location.href = "/batches?categories=" + categories["categories"]));
+  }
+
+
 // Back to batches
 function batchBack(){
     window.location.href="/batches"
@@ -85,6 +116,7 @@ function getDate(){
     console.log(document.getElementById('batchStartDate').value)
 }
 
+//Enquiry
 // Close/Open enquiry
 function toggleEnquiry(){
     toggleSwitch = document.getElementById('enquirySwitch')
@@ -135,6 +167,7 @@ function editEnquiry(enquiryId){
     .then(() => window.location.href="/enquiries");
 }
 
+//Category
 // Delete Category
 function deleteCategory(categoryId){
     fetch('/categories/' + categoryId, {
@@ -176,6 +209,7 @@ function categoryBack(){
     window.location.href="/categories"
 }
 
+//Qualification
 // Delete Qualification
 function deleteQualification(qualificationId){
     fetch('/qualification/' + qualificationId, {
@@ -211,3 +245,84 @@ function editQualification(qualificationId){
 function qualificationBack(){
     window.location.href="/qualification"
 }
+
+//Chart
+// Building Chart
+function BuildChart(labels, values, chartTitle) {
+var ctx = document.getElementById("myChart").getContext("2d");
+var myChart = new Chart(ctx, {
+    type: "line",
+    data: {
+    labels: labels, // Our labels
+    datasets: [
+        {
+        fill: false,
+        label: chartTitle, // Name the series
+        data: values, // Our values
+        borderColor: [// Add custom color borders
+            "rgba(82, 171, 152, 1)"],
+        borderWidth: 2 // Specify bar border width
+        }
+    ]
+    },
+    options: {
+    responsive: true, // Instruct chart js to respond nicely.
+    maintainAspectRatio: false, // Add to prevent default behavior of full-width/height
+    scales: {
+        xAxes: [
+        {
+            gridLines: {
+            display: false
+            }
+        }
+        ],
+        yAxes: [
+        {
+            gridLines: {
+            display: false
+            },
+            ticks: {
+            beginAtZero: true
+            }
+        }
+        ]
+    }
+    }
+});
+return myChart;
+}
+
+var table = document.getElementById("dataTable");
+var json = []; // First row needs to be headers
+var headers = [];
+for (var i = 0; i < table.rows[0].cells.length; i++) {
+headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi, "");
+}
+
+// Go through cells
+for (var i = 1; i < table.rows.length; i++) {
+var tableRow = table.rows[i];
+var rowData = {};
+for (var j = 0; j < tableRow.cells.length; j++) {
+    rowData[headers[j]] = tableRow.cells[j].innerHTML;
+}
+
+json.push(rowData);
+}
+
+console.log(json);
+
+// Map JSON values back to label array
+var labels = json.map(function (e) {
+return e.date;
+});
+console.log(labels);
+
+// Map JSON values back to values array
+var values = json.map(function (e) {
+return e.logincount;
+});
+console.log(values);
+
+var chart = BuildChart(labels, values, "Login Count of users");
+  
