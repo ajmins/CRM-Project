@@ -189,9 +189,10 @@
                         </div>
                         <div class="input-field col s6">
                             <select name="enquiryStatus" id="editenquiryStatus{{ enquiry.enquiryId }}" >
-                                {% for enquiry in enquiryStatus %}
-                                <option value="{{ enquiry.enquiryStatus }}" selected>{{enquiry.enquiryStatus }}</option>
-                                {% endfor %}
+                                
+                                <option value="True" selected>True</option>
+                                <option value="">False</option>
+    
                             </select>
                             <label>Enquiry Status</label>
                         </div>
