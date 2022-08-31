@@ -334,3 +334,82 @@ function editQualification(qualificationId) {
 function categoryBack() {
   window.location.href = "/qualification";
 }
+
+
+// Delete Category
+function deleteCategory(categoryId){
+    fetch('/categories/' + categoryId, {
+        method: 'DELETE'
+    })
+    .then(() => window.location.href="/categories");
+}
+
+// Search Category
+function searchCategory(){
+    searchBy = document.getElementById('searchBy').value
+    searchConstraint = document.getElementById('searchConstraint').value
+    fetch('/categories/' + searchBy + '/' + searchConstraint, {
+        method: 'GET'
+    })
+    .then(() => window.location.href="/categories/" + searchBy + '/' + searchConstraint);
+}
+
+//editing category
+function editCategory(categoryId){
+    comments = document.getElementById('editCategoryComments' + categoryId).value
+    if(comments == 0){
+        comments = document.getElementById('editCategoryComments' + categoryId).placeholder
+    }
+    fetch('/categories/' + categoryId, {
+        method: 'PUT',
+        body: JSON.stringify({
+            categoryId: categoryId,
+            categoryName: document.getElementById('editCategoryName' + categoryId).placeholder,
+            categoryStatus: Boolean(document.getElementById('editCategoryStatus' + categoryId).value),
+            categoryComments: comments
+        })
+    })
+    .then(() => window.location.href="/categories");
+}
+
+// Back to categories
+function categoryBack(){
+    window.location.href="/categories"
+}
+
+// Delete Qualification
+function deleteQualification(qualificationId){
+    fetch('/qualification/' + qualificationId, {
+        method: 'DELETE'
+    })
+    .then(() => window.location.href="/qualification");
+}
+
+// Search Qualification
+function searchQualification(){
+    searchBy = document.getElementById('searchBy').value
+    searchConstraint = document.getElementById('searchConstraint').value
+    fetch('/qualification/' + searchBy + '/' + searchConstraint, {
+        method: 'GET'
+    })
+    .then(() => window.location.href="/qualification/" + searchBy + '/' + searchConstraint);
+}
+
+//editing Qualification -- doubt
+function editQualification(qualificationId){
+    fetch('/qualification/' + qualificationId, {
+        method: 'PUT',
+        body: JSON.stringify({
+            qualificationId: qualificationId,
+            qualificationName: document.getElementById('editQualificationName' + qualificationId).placeholder,
+            qualificationStatus: document.getElementById('editQualificationStatus' + qualificationId).value,
+        })
+    })
+    .then(() => window.location.href="/qualification");
+}
+
+// Back to Qualification
+function categoryBack(){
+    window.location.href="/qualification"
+}
+
