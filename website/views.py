@@ -1,11 +1,47 @@
 from flask import Blueprint, render_template, request, jsonify, url_for, redirect
 from . import db
-from .models import Category, Batches, Courses, Enquiries, Users, Qualifications
+from .models import Category, Batches, Courses, Enquiries, Users, Qualifications, ActivityLog
 import json
+from sqlalchemy import func, Date
+from datetime import date
+
+
 
 views = Blueprint('views', __name__)
 
 categories =[]
+
+
+@views.route('/dashboard')
+def dashboard():
+    users = Users.query.all()
+    dates = ActivityLog.query.with_entities(func.cast(ActivityLog.time, Date).label('Date'), func.count(ActivityLog.userId).label('logincount')).group_by(func.cast(ActivityLog.time, Date)).all()
+    # dates = ActivityLog.query(cast(ActivityLog.time, Date)).distinct().all()
+    return render_template('dashboard.html', users=users, dates=dates)
+
+@views.route('/users')
+def  users():
+    users = Users.query.all()
+    if request.args :
+        print(request.args.get('roles').split(','))
+        listAll = False
+        users = Users.query.filter(Users.userRoleId.in_(request.args.get('roles').split(','))).all()
+        if len(request.args.get('roles').split(',')) == 2:
+            listAll = True
+        elif request.args.get('roles').split(',') == ['']:
+            listAll = True
+            users = Users.query.all()
+        return render_template('users.html', users=users, listAll=listAll)
+    return render_template('users.html', users=users, listAll=True)
+
+@views.route('/users/<searchBy>/<searchConstraint>')
+def searchUser(searchBy, searchConstraint):
+    if searchBy == 'id':
+        users = Users.query.filter(Users.userId.like("%"+searchConstraint+"%")).all()
+    elif searchBy == 'name':
+        users = Users.query.filter(Users.userName.like("%"+searchConstraint+"%")).all()
+    return render_template('users.html', users=users, listAll=False)
+
 batches =[]
 enquiries = []
 
@@ -25,7 +61,22 @@ def batches():
         db.session.commit()
     batches = Batches.query.all()
     courses = Courses.query.with_entities(Courses.courseId, Courses.courseName).distinct().all()
+
+    categories = Category.query.with_entities(Category.categoryId, Category.categoryName).distinct().all()
+    if request.args :
+        print(request.args.get('categories').split(','))
+        listAll = False
+        batches = Batches.query.filter(Batches.batchStatus.in_((request.args.get('categories')).split(','))).all()
+        if len(request.args.get('categories').split(',')) == 2:
+            listAll = True
+        elif request.args.get('categories').split(',') == ['']:
+            listAll = True
+            batches = Batches.query.all()
+        return render_template('batches.html', batches=batches[::-1], listAll=listAll, courses=courses, categories=categories)
+    return render_template('batches.html', batches=batches[::-1], listAll=True, courses=courses, categories=categories)
+
     return render_template('batches.html', batches=batches[::-1], listAll=True, courses=courses)
+
 
 @views.route('/batches/<batchId>', methods=['DELETE'])
 def deleteBatch(batchId):
@@ -51,6 +102,9 @@ def editBatch(batchId):
     return jsonify({})
 
 
+
+
+
 @views.route('/batches/<searchBy>/<searchConstraint>')
 def searchBatch(searchBy, searchConstraint):
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -64,7 +118,13 @@ def searchBatch(searchBy, searchConstraint):
         searchConstraint = dateList[2] + "-" + f"{(months.index(dateList[0])+1):02}" + "-" + f"{dateList[1][:-1]:02}"
         print(searchConstraint)
         batches = Batches.query.filter(Batches.batchStartDate.like("%"+searchConstraint+"%")).all()
+
+    courses = Courses.query.with_entities(Courses.courseId, Courses.courseName).distinct().all()
+    categories = Category.query.with_enitities(Category.categoryId, Category.categoryName).distinct().all()
+    return render_template('batches.html', batches=batches[::-1], listAll=False, courses=courses, categories=categories)
+
     return render_template('batches.html', batches=batches, listAll=False)
+
 
 @views.route('/categories', methods=['GET', 'POST'])
 def categories():
