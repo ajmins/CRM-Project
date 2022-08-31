@@ -1,6 +1,7 @@
 import csv
 import json
 import os
+from itertools import zip_longest
 
 course_set = set()
 # create a csv file
@@ -20,7 +21,7 @@ with open('stud_course_database.csv', 'r') as csvfile:
     names = []
     phones = []
 
-
+    next(csvfile)
 
     for row in csv.reader(csvfile):
         temp = []
@@ -90,6 +91,26 @@ with open('stud_course_database.csv', 'r') as csvfile:
 
     other_category = [i for i in courses if i not in java_category and i not in python_category and i not in dot_net_category and i not in test_category]
     #print(other_category)
+    other_category_set = set(other_category)
+    course_set = course_set - other_category_set
+    print(other_category_set)
+    print(len(other_category_set))
+    print(course_set)
+    print(len(course_set))
+
+    rows = [list(java_category_set),list(python_category_set),list(dot_net_category_set),list(test_category_set),list(other_category_set)]
+    print(rows)
+
+    with open('category.csv','w') as category_csv_file:
+        writer = csv.writer(category_csv_file)
+        writer.writerows([['JAVA','PYTHON','NET','TESTING','OTHER']])
+        export_data = zip_longest(*rows, fillvalue = '')
+        writer.writerows(export_data)
+
+
+
+
+
 
     with open('courses.csv', 'w') as csvfile:
         writer = csv.writer(csvfile)
