@@ -157,3 +157,23 @@ function editEnquiry(enquiryId){
     })
     .then(() => window.location.href="/enquiries");
 }
+
+function editCourses(courseId){
+    // strength = document.getElementById('editBatchStrength' + batchId).value
+    // if(strength == 0){
+    //     strength = document.getElementById('editBatchStrength' + batchId).placeholder
+    // }
+    fetch('/batches/' + batchId, {
+        method: 'PUT',
+        body: JSON.stringify({
+            batchId: batchId,
+            batchName: document.getElementById('editBatchName' + batchId).value,
+            batchCourseId: document.getElementById('editBatchCourseId' + batchId).value,
+            batchStrength: Number(strength),
+            batchStatus: Boolean(document.getElementById('editBatchStatus' + batchId).value),
+            batchStartDate: document.getElementById('editBatchStartDate' + batchId).placeholder,
+            batchEndDate: document.getElementById('editBatchEndDate' + batchId).placeholder
+        })
+    })
+    .then(() => window.location.href="/batches");
+}

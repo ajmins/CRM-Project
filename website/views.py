@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify, url_for, redirect
 from . import db
-from .models import Category, Batches, Courses, Enquiries, Users
+from .models import Category, Batches, Courses, Enquiries, Users, Qualifications
 import json
 
 views = Blueprint('views', __name__)
@@ -168,7 +168,7 @@ def courses():
             courseVideoLink = request.form.get('courseUrl')
             courseId = request.form.get('courseId')
             print(courseId)
-            c = Courses.query.get(courseId)
+            c = Courses.query.filter(courseId==courseId).first()
             print(c)
             c.courseName = courseName
             c.courseCategoryId = courseCategoryId
