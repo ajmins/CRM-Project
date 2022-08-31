@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var instances = M.FormSelect.init(elems);
 });
 
+
 // Search User
 function searchUser() {
   searchBy = document.getElementById("searchBy").value;
@@ -60,15 +61,25 @@ function applyFilters() {
   fetch("/batches", {method: "GET"}).then(() => (window.location.href = "/batches?categories=" + categories["categories"]));
 }
 
-// Close/Open Batch
-function toggleBatch() {
-  toggleSwitch = document.getElementById("batchSwitch");
-  if (toggleSwitch.checked) {
-    alert(Boolean(toggleSwitch.value));
-  }
 
-  // .then(() => window.location.href="/categories/" + searchBy + '/' + searchConstraint);
-}
+//edit batch
+function editBatch(batchId){
+    strength = document.getElementById('editBatchStrength' + batchId).value
+    if(strength == 0){
+        strength = document.getElementById('editBatchStrength' + batchId).placeholder
+    }
+    fetch('/batches/' + batchId, {
+        method: 'PUT',
+        body: JSON.stringify({
+            batchId: batchId,
+            batchName: document.getElementById('editBatchName' + batchId).value,
+            batchCourseId: document.getElementById('editBatchCourseId' + batchId).value,
+            batchStrength: Number(strength),
+            batchStatus: Boolean(document.getElementById('editBatchStatus' + batchId).value),
+            batchStartDate: document.getElementById('editBatchStartDate' + batchId).placeholder,
+            batchEndDate: document.getElementById('editBatchEndDate' + batchId).placeholder
+        })
+
 
 function editBatch(batchId) {
   strength = document.getElementById("editBatchStrength" + batchId).value;
@@ -85,6 +96,7 @@ function editBatch(batchId) {
       batchStatus: Boolean(document.getElementById("editBatchStatus" + batchId).value),
       batchStartDate: document.getElementById("editBatchStartDate" + batchId).placeholder,
       batchEndDate: document.getElementById("editBatchEndDate" + batchId).placeholder
+
     })
   }).then(() => (window.location.href = "/batches"));
 }
@@ -369,6 +381,44 @@ function editCategory(categoryId){
             categoryComments: comments
         })
     })
+
+    .then(() => window.location.href="/enquiries");
+}
+
+// Delete Category
+function deleteCategory(categoryId){
+    fetch('/categories/' + categoryId, {
+        method: 'DELETE'
+    })
+    .then(() => window.location.href="/categories");
+}
+
+// Search Category
+function searchCategory(){
+    searchBy = document.getElementById('searchBy').value
+    searchConstraint = document.getElementById('searchConstraint').value
+    fetch('/categories/' + searchBy + '/' + searchConstraint, {
+        method: 'GET'
+    })
+    .then(() => window.location.href="/categories/" + searchBy + '/' + searchConstraint);
+}
+
+//editing category
+function editCategory(categoryId){
+    comments = document.getElementById('editCategoryComments' + categoryId).value
+    if(comments == 0){
+        comments = document.getElementById('editCategoryComments' + categoryId).placeholder
+    }
+    fetch('/categories/' + categoryId, {
+        method: 'PUT',
+        body: JSON.stringify({
+            categoryId: categoryId,
+            categoryName: document.getElementById('editCategoryName' + categoryId).placeholder,
+            categoryStatus: Boolean(document.getElementById('editCategoryStatus' + categoryId).value),
+            categoryComments: comments
+        })
+    })
+
     .then(() => window.location.href="/categories");
 }
 
@@ -409,7 +459,13 @@ function editQualification(qualificationId){
 }
 
 // Back to Qualification
+
+function qualificationBack(){
+    window.location.href="/qualification"
+}
+
 function categoryBack(){
     window.location.href="/qualification"
 }
+
 
