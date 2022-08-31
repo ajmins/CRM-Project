@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+{% block title %}Enquiries{% endblock %}
+{% block content %}
+    {% if not listAll %}
+    <div class="back col s3">
+        <button class="back-btn btn-flat btn-medium waves-effect waves-orange" onClick="enquiryBack()">
+            <i class="material-icons">arrow_back</i>
+        </button>
+    </div>
+    {% endif %}
+
+
+<div class="buttons col s9">
+    <a href="#modal1" id="searchBtn" class="btn waves-effect waves-light orange"
+        onclick="$('#modal1').modal('open');">Search
+        <i class="material-icons white-text ">search</i>
+    </a>
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div class="search-bar row">
+                <div class="input-field col s3">
+                    <select name="searchBy" id="searchBy">
+                        <option value='id' selected>Enquiry Id</option>
+                        <option value='uid' selected>User Id</option>
+                        <option value='name' selected>Course Name</option>
+                    </select>
+                    <label>Search By</label>
+                </div>
+                <div class="input-field col s9">
+                    <i class="material-icons prefix black-text">search</i>
+                    <input name="searchConstraint" id="searchConstraint" type="text" class="validate">
+                    <label for="searchConstraint">Search enquiry</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action"
+                    onClick="searchEnquiry('')">Search
+                    <i class="material-icons right">search</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="modal6" class="modal">
+        <div class="modal-content">
+            <div class="center">
+                <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action"
+                    onClick="searchBatch('date')">Search
+                    <i class="material-icons right">search</i>
+                </button>
+            </div>
+        </div> 
+    </div>
+
+    {% if listAll %}
+    <a href="#modal2" class="btn waves-effect waves-light orange modal-trigger"
+        onclick="$('#modal2').modal('open');">Add enquiry
+        <i class="material-icons right">add</i>
+    </a>
+
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <form action="" method="post">
+                <div class="row">
+                    <!--
+                    <div class="input-field col s4">
+                        <select name="enquiryUserId" id="enquiryUserId">
+                            {% for users in Users %}
+                            <option value='{{ users.userId }}'>{{users.userId }}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Enquiry UserId</label>
+                    </div>
+                    -->
+                    <div class="input-field col s4">
+                        <select name="enquiryUserId" id="enquiryUserId">
+                            {% for user in users %}
+                            <option value='{{ user.userId }}'>{{ user.userId }}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Enquiry UserId</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <select name="enquiryCourseId" id="enquiryCourseId">
+                            {% for course in courses %}
+                            <option value='{{ course.courseId }}'>{{course.courseId }} - {{ course.courseName}}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Enquiry CourseId</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <select name="enquiryStatus" id="enquiryStatus">
+                            {% for enquiry in enquiryStatus %}
+                            <option value="{{ enquiry.enquiryStatus }}" selected>{{enquiry.enquiryStatus }}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Enquiry Status</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="enquiryDescription" name="enquiryDescription" class="materialize-textarea"></textarea>
+                        <label for="enquiryDescription">Enter an enquiry</label>
+                    </div>
+                </div>
+  
+                <div class="modal-footer">
+                    <button class="modal-close btn-flat waves-effect waves-orange" type="submit" name="action">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <a href="#modal3" class="filter-btn btn-flat modal-trigger btn-medium waves-effect waves-orange"
+        onclick="$('#modal3').modal('open');"><i class="material-icons">filter_list</i></a>
+
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <form action="#">
+                <p>
+                    <label>
+                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
+                        <span>Filter 1</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
+                        <span>Filter 2</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="checkbox" type="checkbox" class="checkbox-orange" />
+                        <span>Filter 3</span>
+                    </label>
+                </p>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-orange btn-flat">Apply</a>
+            <a href="#" class="waves-effect waves-orange btn-flat" onclick="clearFilters()">Clear</a>
+        </div>
+    </div>
+    {% if enquiries|count != 0 %}
+        {% if enquiries|count == 1 %}
+        <span class="card-subtitle center"><em>Showing {{ enquiries|count }} result</em></span>
+        {% else %}
+        <span class="card-subtitle center"><em>Showing {{ enquiries|count }} results</em></span>
+        {% endif %}
+    {% endif %}
+</div>
+{% if enquiries|length == 0 %}
+<p class="center empty-content">There are no enquiries to show</p>
+{% else %}
+{% for enquiry in enquiries %}
+<div class="card">
+    <div class="row right">
+        <a href="#{{ enquiry.enquiryId }}" class="modal-trigger btn-flat green-text waves-effect waves-green"
+            >Edit
+            <i class="material-icons green-text right">edit</i>
+        </a>
+        <div id="{{ enquiry.enquiryId }}" class="modal">
+            <div class="modal-content">
+                <form action="">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea name="enquiryDescription" id="editenquiryDescription{{ enquiry.enquiryId }}" class="materialize-textarea" placeholder="{{ enquiry.enquiryDescription }}" ></textarea>
+                            <label for="enquiryDescription">Enquiry Description</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <select name="enquiryUserId" id="editenquiryUserId{{ enquiry.enquiryId }}" disabled>
+                                <option value="{{ enquiry.enquiryUserId }}" selected>{{enquiry.enquiryUserId }}</option>
+                            </select>
+                            <label>Enquiry UserId</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <select name="enquiryCourseId" id="editenquiryCourseId{{ enquiry.enquiryId }}" disabled>
+                                <option value="{{ enquiry.enquiryCourseId }}" selected>{{enquiry.enquiryCourseId }}</option>
+                            </select>
+                            <label>Enquiry CourseId</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <select name="enquiryStatus" id="editenquiryStatus{{ enquiry.enquiryId }}" >
+                                
+                                <option value="True" selected>True</option>
+                                <option value="">False</option>
+    
+                            </select>
+                            <label>Enquiry Status</label>
+                        </div>
+            
+                    </div>
+                    <div class="modal-footer">
+                        <button class="modal-close btn-flat waves-effect waves-orange" onClick="editEnquiry('{{ enquiry.enquiryId }}')">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if enquiry.users|count != 0 %}
+        <a class="btn-flat red-text waves-effect waves-red tooltipped" data-position="top"
+            data-tooltip="There are no enquiries. This can be deleted." onClick="deleteEnquiry('{{ enquiry.enquiryId }}')">Delete
+            <i class="material-icons red-text right">delete</i>
+        </a>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col s10">
+            <h1 class="card-title">
+                Enquiry Id : {{ enquiry.enquiryId }}
+            </h1>
+            <p class="card-subtitle"><em>Enquiry User Id : {{ enquiry.enquiryUserId }}</em></p>
+            <p class="card-subtitle"><em>Enquiry Course Id : {{ enquiry.enquiryCourseId }}</em></p>
+            <span class="card-subtitle"><em>Description : {{ enquiry.enquiryDescription }}</em></span>
+        </div>
+
+
+        <div class="col s2 right">
+            <div class="switch">
+                <label>
+                  DISABLED
+                  {% if enquiry.enquiryStatus %}
+                  <input id="enquirySwitch" name='enquiryClose' type="checkbox" onClick="toggleEnquiry()" value="ENABLED" checked disabled>
+                  {% else %}
+                  <input id="enquirySwitch" name='enquiryClose' type="checkbox" onClick="toggleEnquiry()" value="ENABLED" disabled>
+                  {% endif %}
+                  <span class="lever"></span>
+                  ENABLED
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}
