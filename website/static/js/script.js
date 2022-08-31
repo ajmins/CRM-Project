@@ -18,6 +18,7 @@ function clearFilters() {
 document.addEventListener('DOMContentLoaded', function () {
     var elems = document.querySelectorAll('select');
     var instances = M.FormSelect.init(elems);
+
 });
 
 // Search User
@@ -62,11 +63,26 @@ function deleteCategory(categoryId) {
 
 // Search Category
 function searchCategory() {
+
+  });
+
+// Delete Category
+function deleteCategory(categoryId){
+    fetch('/categories/' + categoryId, {
+        method: 'DELETE'
+    })
+    .then(() => window.location.href="/categories");
+}
+
+// Search Category
+function searchCategory(){
+
     searchBy = document.getElementById('searchBy').value
     searchConstraint = document.getElementById('searchConstraint').value
     fetch('/categories/' + searchBy + '/' + searchConstraint, {
         method: 'GET'
     })
+
         .then(() => window.location.href = "/categories/" + searchBy + '/' + searchConstraint);
 }
 
@@ -94,14 +110,36 @@ function toggleBatch() {
     if (toggleSwitch.checked) {
         alert(Boolean(toggleSwitch.value))
     }
+
+    .then(() => window.location.href="/categories/" + searchBy + '/' + searchConstraint);
+}
+
+// Back to categories
+function categoryBack(){
+    window.location.href="/categories"
+}
+
+// Close/Open Batch
+function toggleBatch(){
+    toggleSwitch = document.getElementById('batchSwitch')
+    if (toggleSwitch.checked) {
+        alert(Boolean(toggleSwitch.value))
+    } 
+
     else {
         alert(Boolean(''))
     }
 }
 
+
 function editBatch(batchId) {
     strength = document.getElementById('editBatchStrength' + batchId).value
     if (strength == 0) {
+
+function editBatch(batchId){
+    strength = document.getElementById('editBatchStrength' + batchId).value
+    if(strength == 0){
+
         strength = document.getElementById('editBatchStrength' + batchId).placeholder
     }
     fetch('/batches/' + batchId, {
@@ -116,6 +154,7 @@ function editBatch(batchId) {
             batchEndDate: document.getElementById('editBatchEndDate' + batchId).placeholder
         })
     })
+
         .then(() => window.location.href = "/batches");
 }
 
@@ -134,12 +173,33 @@ function searchBatch(date) {
         searchConstraint = document.getElementById('searchConstraint').value
     }
     else {
+
+    .then(() => window.location.href="/batches");
+}
+
+// Delete Batch
+function deleteBatch(batchId){
+    fetch('/batches/' + batchId, {
+        method: 'DELETE'
+    })
+    .then(() => window.location.href="/batches");
+}
+
+// Search Batch
+function searchBatch(date){
+    if (date != 'date'){
+        searchBy = document.getElementById('searchBy').value
+        searchConstraint = document.getElementById('searchConstraint').value
+    }
+    else{
+
         searchBy = 'date'
         searchConstraint = document.getElementById('branchStartDateSearch').value
     }
     fetch('/batches/' + searchBy + '/' + searchConstraint, {
         method: 'GET'
     })
+
         .then(() => window.location.href = "/batches/" + searchBy + '/' + searchConstraint);
 }
 
@@ -226,3 +286,67 @@ var values = json.map(function (e) {
 console.log(values);
 
 var chart = BuildChart(labels, values, "Login Count of users");
+
+    .then(() => window.location.href="/batches/" + searchBy + '/' + searchConstraint);
+}
+
+// Back to batches
+function batchBack(){
+    window.location.href="/batches"
+}
+
+// Get date picked
+function getDate(){
+    console.log(document.getElementById('batchStartDate').value)
+}
+
+// Close/Open enquiry
+function toggleEnquiry(){
+    toggleSwitch = document.getElementById('enquirySwitch')
+    if (toggleSwitch.checked) {
+        alert(Boolean(toggleSwitch.value))
+    } 
+    else {
+        alert(Boolean(''))
+    }
+}
+// Back to enquiries
+function enquiryBack(){
+    window.location.href="/enquiries"
+}
+
+// Search Enquiry
+function searchEnquiry(date){
+    if (date != 'date'){
+        searchBy = document.getElementById('searchBy').value
+        searchConstraint = document.getElementById('searchConstraint').value
+    }
+    else{
+        searchBy = 'date'
+        searchConstraint = document.getElementById('branchStartDateSearch').value
+    }
+    fetch('/enquiries/' + searchBy + '/' + searchConstraint, {
+        method: 'GET'
+    })
+    .then(() => window.location.href="/enquiries/" + searchBy + '/' + searchConstraint);
+}
+
+//edit enquiry
+function editEnquiry(enquiryId){
+    enquiryDescription = document.getElementById('editenquiryDescription' + enquiryId).value
+    if(enquiryDescription == ''){
+        enquiryDescription = document.getElementById('editenquiryDescription' + enquiryId).placeholder
+    }
+    fetch('/enquiries/' + enquiryId, {
+        method: 'PUT',
+        body: JSON.stringify({
+            enquiryId: enquiryId,
+            enquiryUserId: document.getElementById('editenquiryUserId' + enquiryId).value,
+            enquiryCourseId: document.getElementById('editenquiryCourseId' + enquiryId).value,
+            enquiryDescription: enquiryDescription,
+            enquiryStatus: document.getElementById('editenquiryStatus' + enquiryId).value,
+        })
+    })
+    .then(() => window.location.href="/enquiries");
+}
+
