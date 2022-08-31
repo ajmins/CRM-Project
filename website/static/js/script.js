@@ -145,7 +145,6 @@ function editEnquiry(enquiryId){
     if(enquiryDescription == ''){
         enquiryDescription = document.getElementById('editenquiryDescription' + enquiryId).placeholder
     }
-    alert(document.getElementById('editenquiryStatus' + enquiryId).value)
     fetch('/enquiries/' + enquiryId, {
         method: 'PUT',
         body: JSON.stringify({
@@ -153,7 +152,7 @@ function editEnquiry(enquiryId){
             enquiryUserId: document.getElementById('editenquiryUserId' + enquiryId).value,
             enquiryCourseId: document.getElementById('editenquiryCourseId' + enquiryId).value,
             enquiryDescription: enquiryDescription,
-            enquiryStatus: Boolean(document.getElementById('editenquiryStatus' + enquiryId).value),
+            enquiryStatus: document.getElementById('editenquiryStatus' + enquiryId).value,
         })
     })
     .then(() => window.location.href="/enquiries");

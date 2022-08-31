@@ -116,7 +116,6 @@ def enquiries():
     enquiries=Enquiries.query.all()
     courses = Courses.query.with_entities(Courses.courseId, Courses.courseName).distinct().all()
     users = Users.query.with_entities(Users.userId).distinct().all()
-    print(users)
     enquiryStatus = Enquiries.query.with_entities(Enquiries.enquiryStatus).distinct().all()
     return render_template('enquiries.html', enquiries=enquiries[::-1], listAll=True, users=users, courses=courses, enquiryStatus=enquiryStatus)
 
@@ -147,8 +146,8 @@ def editEnquiry(enquiryId):
     enquiry.enquiryUserId = value['enquiryUserId']
     enquiry.enquiryCourseId = value['enquiryCourseId']
     enquiry.enquiryDescription = value['enquiryDescription']
-    enquiry.enquiryStatus = value['enquiryStatus']
+    enquiry.enquiryStatus = bool(value['enquiryStatus'])
     db.session.add(enquiry)
-    print(value)
     db.session.commit()
+    print(value)
     return jsonify({})
