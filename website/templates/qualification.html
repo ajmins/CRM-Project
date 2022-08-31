@@ -1,33 +1,80 @@
 {% extends "base.html" %} 
-{% block title %}Qualification{% endblock %} 
+{% block title %}Qualifications{% endblock %} 
 {% block content %}
-<div class="buttons">
-    <div class="search-bar">
-        <div class="input-field">
-            <i class="material-icons prefix black-text">search</i>
-            <input id="icon_prefix" type="text" class="validate">
-            <label for="icon_prefix">Search qualification</label>
+{% if not listAll %}
+<div class="back col s3">
+    <button class="back-btn btn-flat btn-medium waves-effect waves-orange" onClick="qualificationBack()">
+        <i class="material-icons">arrow_back</i>
+    </button>
+</div>
+{% endif %}
+
+<!--search qualification-->
+<div class="buttons col s9">
+    <a href="#modal1" id="searchBtn" class="btn waves-effect waves-light orange" 
+        onclick="$('#modal1').modal('open');">Search
+        <i class="material-icons white-text ">search</i>
+    </a>
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <div class="search-bar row">
+                <div class="input-field col s3">
+                    <select name="searchBy" id="searchBy">
+                        <option value='id' selected>Id</option>
+                        <option value='name'>Name</option>
+                    </select>
+                    <label>Search By</label>
+                </div>
+                <div class="input-field col s9">
+                    <i class="material-icons prefix black-text">search</i>
+                    <input name="searchConstraint" id="searchConstraint" type="text" class="validate">
+                    <label for="searchConstraint">Search qualification</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close btn-flat waves-effect waves-orange" type="submit"
+                    name="action" onCLick="searchQualification()">Search
+                    <i class="material-icons right">search</i>
+                </button>
+            </div>
         </div>
     </div>
 
-    <button id="searchBtn" class="btn waves-effect waves-light orange">Search
-        <i class="material-icons white-text right">search</i>
-    </button>
-
+<!--adding qualification-->
+    {% if listAll %}
     <a href="#modal2" class="btn waves-effect waves-light orange modal-trigger"
         onclick="$('#modal2').modal('open');">Add qualification
         <i class="material-icons right">add</i>
     </a>
-
     <div id="modal2" class="modal">
         <div class="modal-content">
             <form action="" method="post">
                 <div class="row">
-                    <div class="input-field col s12">
-                        <textarea id="description" class="materialize-textarea"></textarea>
-                        <label for="description">Enter the qualification name</label>
+                    <!--
+                    <div class="input-field col s6">
+                        <textarea name="categoryId" id="categoryId" class="materialize-textarea"></textarea>
+                        <label for="categoryId">Enter the qualification Id</label>
+                    </div>-->
+                    <div class="input-field col s6">
+                        <textarea name="qualificationName" id="qualificationName" class="materialize-textarea"></textarea>
+                        <label for="qualificationName">Enter the qualification</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="qualificationStatus" id="qualificationStatus">
+                            <option value='1'>ENABLED</option>
+                            <option value=''>DISABLED</option>
+                        </select>
+                        <label>Qualification Status</label>
                     </div>
                 </div>
+                <!--
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea name="categoryComments" id="categoryComments" class="materialize-textarea"></textarea>
+                        <label for="categoryComments">Enter any comment</label>
+                    </div>
+                </div>-->
                 <div class="modal-footer">
                     <button class="modal-close btn-flat waves-effect waves-orange" type="submit"
                         name="action">Submit
@@ -37,29 +84,31 @@
             </form>
         </div>
     </div>
+    {% endif %}
 
-    <a href="#modal1" class="filter-btn btn-flat modal-trigger btn-medium waves-effect waves-orange"
-        onclick="$('#modal1').modal('open');"><i class="material-icons">filter_list</i></a>
+    <!--filter-->
+    <a href="#modal3" class="filter-btn btn-flat modal-trigger btn-medium waves-effect waves-orange"
+        onclick="$('#modal3').modal('open');"><i class="material-icons">filter_list</i></a>
 
-    <div id="modal1" class="modal">
+    <div id="modal3" class="modal">
         <div class="modal-content">
             <form action="#">
                 <p>
                     <label>
                         <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Category 1</span>
+                        <span>Filter 1</span>
                     </label>
                 </p>
                 <p>
                     <label>
                         <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Category 2</span>
+                        <span>Filter 2</span>
                     </label>
                 </p>
                 <p>
                     <label>
                         <input name="checkbox" type="checkbox" class="checkbox-orange" />
-                        <span>Category 3</span>
+                        <span>Filter 3</span>
                     </label>
                 </p>
             </form>
@@ -70,33 +119,68 @@
         </div>
     </div>
 </div>
-
-<div class="card">
-    <div class="row right">
-        <a href="#modal3" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal3').modal('open');">Edit
-            <i class="material-icons right">edit</i>
-        </a>
-        <div id="modal3" class="modal">
-            <div class="modal-content">
-                <h1>Hi</h1> 
+<!--card-->
+{% for qual in qualifications %}
+    <div class="card">
+        <div class="row right">
+            <a href="#{{ qual.qualificationId }}" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#{{ qual.qualificationId }}').modal('open');">Edit
+                <i class="material-icons right">edit</i>
+            </a>
+            <div id="{{ qual.qualificationId }}" class="modal">
+                <div class="modal-content">
+                    <form action="">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <textarea name="qualificationId" id="editQualificationId{{ qual.qualificationId }}" class="materialize-textarea" placeholder="{{ qual.qualificationId }}" disabled></textarea>
+                                <label for="qualificationId">Qualification Id</label>
+                            </div>
+                        
+                            <div class="input-field col s6">
+                                <textarea name="qualificationName" id="editQualificationName{{ qual.qualificationId }}" class="materialize-textarea" placeholder="{{ qual.qualificationName }}" disabled></textarea>
+                                <label for="qualificationName">Qualification</label>
+                            </div>
+                        </div>
+                        <div class="input-field col s6">
+                            <select name="editQualificationStatus" id="editQualificationStatus{{ qual.qualificationId }}">
+                                <option value='1'>ENABLED</option>
+                                <option value=''>DISABLED</option>
+                            </select>
+                            <label>Qualification Status</label>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button class="modal-close btn-flat waves-effect waves-orange" type="submit"
+                                name="action" onClick="editQualification('{{qual.qualificationId}}')">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-        <a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Delete
-            <i class="material-icons right">delete</i>
-        </a>
-        <div id="modal4" class="modal">
-            <div class="modal-content">
-                <h1>Hi</h1>
+            <div class="switch"><!--TO BE MODIFIED-->
+                <label>
+                  <input type="checkbox">
+                  <span class="lever"></span>
+                </label>
             </div>
+            <!--<a href="#modal4" class="modal-close btn-flat waves-effect waves-orange" onclick="$('#modal4').modal('open');">Delete
+                <i class="material-icons right">delete</i>
+            </a>
+            <div id="modal4" class="modal">
+                <div class="modal-content">
+                    <h1>Hi</h1>
+                </div>
+            </div>-->
         </div>
+        <div>
+            <h1 class="card-title">
+                {{ qual.qualificationName }}
+            </h1>
+            <span class="card-subtitle"><em>Qualification Id: {{ qual.qualificationId }} </em></span>
+        </div>
+        <p>
+            {{ qual.qualificationStatus }}
+        </p>
     </div>
-    <h1 class="card-title">
-        Card Title
-    </h1>
-    <p>
-        I am a very simple card. I am good at containing small bits of
-        information. I am convenient because I require little markup to
-        use effectively.
-    </p>
-</div>
+{% endfor %}
 {% endblock %}
