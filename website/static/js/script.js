@@ -253,15 +253,15 @@ function editCourse(courseId) {
   }
   alert(courseDescription);
   fetch("/courses/" + courseId, {
-    method: "PUT",
+    method: 'PUT',
     body: JSON.stringify({
       courseCategoryId: document.getElementById("editCourseCategoryId" + courseId).value,
       courseName: document.getElementById("editCourseName" + courseId).value,
       courseDuration: document.getElementById("editCourseDuration" + courseId).value,
       courseStatus: document.getElementById("editCourseStatus" + courseId).value,
       courseDescription: courseDescription,
-      courseInstructor: document.getElementById("editcourseInstructorId" + courseId).value,
-      courseMinQualification: document.getElementById("editCourseMinQualificationId" + courseId).value,
+      courseInstructorId: document.getElementById("editcourseInstructorId" + courseId).value,
+      courseMinQualificationId: document.getElementById("editCourseMinQualificationId" + courseId).value,
       courseBatchSize: document.getElementById("editCourseBatchSize" + courseId).value,
       courseSyllabus: null,
       courseUrl: document.getElementById("editCourseUrl" + courseId).value

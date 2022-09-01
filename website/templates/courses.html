@@ -181,7 +181,7 @@
         </a>
         <div id="{{ course.courseId }}" class="modal">
             <div class="modal-content">
-                <form action="">
+                <form action="" onsubmit="event.preventDefault()">
                     <div class="row">
                         <div class="input-field col s12">
                             <select name="courseCategoryId" id="editCourseCategoryId{{ course.courseId }}">
@@ -242,7 +242,7 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <textarea name="courseBatchSize" id="editcourseBatchSize{{ course.courseId }}" class="materialize-textarea" >{{ course.courseBatchSize }}</textarea>
+                            <textarea name="courseBatchSize" id="editCourseBatchSize{{ course.courseId }}" class="materialize-textarea" >{{ course.courseBatchSize }}</textarea>
                             <label for="courseBatchSize">Course BatchSize </label>
                         </div>
                         <div class="input-field col s6">
